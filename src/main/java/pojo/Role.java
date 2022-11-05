@@ -8,6 +8,6 @@ import java.sql.Date;
 public class Role {
     private Long id;
     private String name;
-    private Date created;
-    private Date updated;
+    private String created;
+    private String updated;
 }

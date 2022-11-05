@@ -10,6 +10,6 @@ public class User {
     private String email;
     private String username;
     private String password;
-    private Date created;
-    private Date updated;
+    private String created;
+    private String updated;
 }
