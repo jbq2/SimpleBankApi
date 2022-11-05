@@ -1,4 +1,4 @@
-package pojo;
+package com.jbq2.simplebankapi.pojo;
 
 import lombok.Data;
 
