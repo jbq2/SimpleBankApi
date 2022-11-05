@@ -1,0 +1,11 @@
+use simplebankapidb;
+
+CREATE TABLE USER_ROLE (
+	`id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `user_id` INT NOT NULL,
+    `role_id` INT NOT NULL,
+    `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `updated` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (`user_id`) REFERENCES users(`id`),
+    FOREIGN KEY (`role_id`) REFERENCES roles(`id`)
+);
