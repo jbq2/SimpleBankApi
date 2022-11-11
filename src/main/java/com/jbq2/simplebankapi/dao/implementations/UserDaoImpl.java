@@ -2,8 +2,8 @@ package com.jbq2.simplebankapi.dao.implementations;
 
 import com.jbq2.simplebankapi.dao.UserDao;
 import com.jbq2.simplebankapi.pojo.User;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -48,12 +48,41 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User save(User user) {
-        return null;
+        String sql = "INSERT INTO USERS (id, email, username, password, created, updated) " +
+                "VALUES (?, ?, ?, ?, ?, ?)";
+
+        try{
+            jdbcTemplate.update(sql,
+                    user.getId(),
+                    user.getEmail(),
+                    user.getUsername(),
+                    user.getPassword(),
+                    user.getCreated(),
+                    user.getUpdated());
+
+            return user;
+        }
+        catch(DataAccessException e){
+            return null;
+        }
     }
 
     @Override
     public User update(User user) {
-        return null;
+        String sql = "UPDATE USERS " +
+                "SET email = ?, username = ?, password = ? " +
+                "WHERE id = ?";
+        try{
+            jdbcTemplate.update(sql,
+                    user.getEmail(),
+                    user.getUsername(),
+                    user.getPassword(),
+                    user.getId());
+            return user;
+        }
+        catch(DataAccessException e){
+            return null;
+        }
     }
 
     @Override

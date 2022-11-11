@@ -1,9 +1,6 @@
 package com.jbq2.simplebankapi.pojo;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.sql.Date;
 
 @Data
 public class User {
