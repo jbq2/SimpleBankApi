@@ -4,6 +4,7 @@ import com.jbq2.simplebankapi.interfaces.Queryable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Data
 @EqualsAndHashCode

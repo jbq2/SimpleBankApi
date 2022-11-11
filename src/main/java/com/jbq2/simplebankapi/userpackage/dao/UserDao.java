@@ -8,9 +8,12 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
 @Component
+@Repository
 public class UserDao implements DataObjectAccessable<User> {
 
     @Autowired
@@ -49,6 +52,17 @@ public class UserDao implements DataObjectAccessable<User> {
         }
     }
 
+    public User findByEmail(String email){
+        String sql = "SELECT * FROM users " +
+                "WHERE email = ?";
+        try{
+            return jdbcTemplate.queryForObject(sql, rowMapper, email);
+        }
+        catch(DataAccessException e){
+            return null;
+        }
+    }
+
     @Override
     public User save(User user) {
         String sql = "INSERT INTO USERS (id, email, password, created, updated) " +
@@ -61,7 +75,7 @@ public class UserDao implements DataObjectAccessable<User> {
                     user.getPassword(),
                     user.getCreated(),
                     user.getUpdated());
-
+            user = findByEmail(user.getEmail());
             return user;
         }
         catch(DataAccessException e){
@@ -79,6 +93,7 @@ public class UserDao implements DataObjectAccessable<User> {
                     user.getEmail(),
                     user.getPassword(),
                     user.getId());
+            user = findByEmail(user.getEmail());
             return user;
         }
         catch(DataAccessException e){
