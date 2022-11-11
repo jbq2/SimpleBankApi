@@ -1,6 +1,6 @@
-package com.jbq2.simplebankapi.pojo;
+package com.jbq2.simplebankapi.userpackage.pojo;
 
-import com.jbq2.simplebankapi.pojo.interfaces.Queryable;
+import com.jbq2.simplebankapi.interfaces.Queryable;
 import lombok.Data;
 
 @Data

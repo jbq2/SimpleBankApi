@@ -1,7 +1,7 @@
-package com.jbq2.simplebankapi.dao;
+package com.jbq2.simplebankapi.userpackage.dao;
 
-import com.jbq2.simplebankapi.dao.Dao;
-import com.jbq2.simplebankapi.pojo.User;
+import com.jbq2.simplebankapi.interfaces.DataObjectAccessable;
+import com.jbq2.simplebankapi.userpackage.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class UserDao implements Dao<User> {
+public class UserDao implements DataObjectAccessable<User> {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

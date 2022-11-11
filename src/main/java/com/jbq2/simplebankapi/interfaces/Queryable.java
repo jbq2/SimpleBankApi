@@ -1,4 +1,4 @@
-package com.jbq2.simplebankapi.pojo.interfaces;
+package com.jbq2.simplebankapi.interfaces;
 
 import javax.management.QueryExp;
 
