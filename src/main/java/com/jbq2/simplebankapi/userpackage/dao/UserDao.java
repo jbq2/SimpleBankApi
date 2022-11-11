@@ -20,7 +20,6 @@ public class UserDao implements DataObjectAccessable<User> {
         User user = new User();
         user.setId(rs.getLong("id"));
         user.setEmail(rs.getString("email"));
-        user.setUsername(rs.getString("username"));
         user.setPassword(rs.getString("password"));
         user.setCreated(rs.getDate("created").toString());
         user.setUpdated(rs.getDate("updated").toString());
@@ -52,14 +51,13 @@ public class UserDao implements DataObjectAccessable<User> {
 
     @Override
     public User save(User user) {
-        String sql = "INSERT INTO USERS (id, email, username, password, created, updated) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO USERS (id, email, password, created, updated) " +
+                "VALUES (?, ?, ?, ?, ?)";
 
         try{
             jdbcTemplate.update(sql,
                     user.getId(),
                     user.getEmail(),
-                    user.getUsername(),
                     user.getPassword(),
                     user.getCreated(),
                     user.getUpdated());
@@ -74,12 +72,11 @@ public class UserDao implements DataObjectAccessable<User> {
     @Override
     public User update(User user) {
         String sql = "UPDATE USERS " +
-                "SET email = ?, username = ?, password = ? " +
+                "SET email = ?, password = ? " +
                 "WHERE id = ?";
         try{
             jdbcTemplate.update(sql,
                     user.getEmail(),
-                    user.getUsername(),
                     user.getPassword(),
                     user.getId());
             return user;
