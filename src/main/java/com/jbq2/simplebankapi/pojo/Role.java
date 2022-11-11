@@ -1,11 +1,10 @@
 package com.jbq2.simplebankapi.pojo;
 
+import com.jbq2.simplebankapi.pojo.interfaces.Queryable;
 import lombok.Data;
 
-import java.sql.Date;
-
 @Data
-public class Role {
+public class Role implements Queryable {
     private Long id;
     private String name;
     private String created;

@@ -1,11 +1,10 @@
 package com.jbq2.simplebankapi.pojo;
 
+import com.jbq2.simplebankapi.pojo.interfaces.Queryable;
 import lombok.Data;
 
-import java.sql.Date;
-
 @Data
-public class UserRole {
+public class UserRole implements Queryable {
     Long id;
     Long user_id;
     Long role_id;
