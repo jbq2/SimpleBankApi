@@ -8,7 +8,7 @@ import java.util.List;
 public interface Dao <T extends Queryable> {
     List<T> findAll();
     T findById(Long id);
-    T save(T role);
-    T update(T role);
+    T save(T queryable);
+    T update(T queryable);
     Boolean delete(Long id);
 }
