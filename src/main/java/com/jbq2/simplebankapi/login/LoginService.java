@@ -34,7 +34,7 @@ public class LoginService {
         }
 
         /* fetching user using loadUserByUsername */
-        UserDetails userDetails = null;
+        UserDetails userDetails;
         try{
             userDetails = userService.loadUserByUsername(login.getEmail());
         }
