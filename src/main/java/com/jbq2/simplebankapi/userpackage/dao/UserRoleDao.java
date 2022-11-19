@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
 @Component
@@ -33,6 +34,17 @@ public class UserRoleDao implements DataObjectAccessable<UserRole> {
         String sql = "SELECT * FROM user_role";
         try{
             return jdbcTemplate.query(sql, rowMapper);
+        }
+        catch(DataAccessException e){
+            return null;
+        }
+    }
+
+    public List<UserRole> findAllByUserId(Long id){
+        String sql = "SELECT * FROM user_role " +
+                "WHERE user_id = ?";
+        try{
+            return jdbcTemplate.query(sql, rowMapper, id);
         }
         catch(DataAccessException e){
             return null;

@@ -10,7 +10,7 @@ public class RegistrationController {
     private final RegistrationService registrationService;
 
     @PostMapping("/register")
-    public Boolean register(@RequestBody Registration registration){
-        return registrationService.validateAndSave(registration);
+    public String register(@RequestBody Registration registration){
+        return registrationService.validateAndSave(registration).name();
     }
 }

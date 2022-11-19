@@ -1,6 +1,8 @@
 package com.jbq2.simplebankapi.userpackage.pojo;
 
-public enum RoleEnum {
+import org.springframework.security.core.GrantedAuthority;
+
+public enum RoleEnum implements GrantedAuthority {
     ADMIN((long) 1), USER((long) 2);
     private final Long value;
 
@@ -10,5 +12,10 @@ public enum RoleEnum {
 
     public Long getValue(){
         return value;
+    }
+
+    @Override
+    public String getAuthority() {
+        return name();
     }
 }
