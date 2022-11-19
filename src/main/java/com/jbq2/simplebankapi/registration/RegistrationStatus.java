@@ -1,5 +1,6 @@
 package com.jbq2.simplebankapi.registration;
 
+/* describes registration success/errors */
 public enum RegistrationStatus {
     SUCCESS,
     FAIL_BAD_EMAIL,

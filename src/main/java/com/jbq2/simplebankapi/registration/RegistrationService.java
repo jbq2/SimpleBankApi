@@ -1,10 +1,11 @@
 package com.jbq2.simplebankapi.registration;
 
-import com.jbq2.simplebankapi.userpackage.dao.UserDao;
 import com.jbq2.simplebankapi.userpackage.dao.UserRoleDao;
 import com.jbq2.simplebankapi.userpackage.pojo.RoleEnum;
 import com.jbq2.simplebankapi.userpackage.pojo.User;
 import com.jbq2.simplebankapi.userpackage.pojo.UserRole;
+import com.jbq2.simplebankapi.userpackage.service.UserRoleService;
+import com.jbq2.simplebankapi.userpackage.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,12 +15,17 @@ import java.util.regex.Pattern;
 @Service
 @AllArgsConstructor
 public class RegistrationService {
+
+    /* userpackage objects needed */
     private User user;
     private UserRole userRole;
-    private final UserDao userDao;
-    private final UserRoleDao userRoleDao;
+    private final UserService userService;
+    private final UserRoleService userRoleService;
+
+    /* Pattern and Matcher objects for regex validation */
     private Pattern pattern;
     private Matcher matcher;
+
     public RegistrationStatus validateAndSave(Registration registration){
         /* validates email */
         pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$");
@@ -41,7 +47,7 @@ public class RegistrationService {
         user.setPassword(registration.getPassword());
 
         /* DataAccessException if email UNIQUE constraint is violated */
-        user = userDao.save(user);
+        user = userService.saveUser(user);
         if(user == null){
             return RegistrationStatus.FAIL_EMAIL_EXISTS;
         }
@@ -49,6 +55,6 @@ public class RegistrationService {
         /* saves user_role, throws error if non unique */
         userRole.setUser_id(user.getId());
         userRole.setRole_id(RoleEnum.USER.getValue());
-        return (userRoleDao.save(userRole) != null) ? RegistrationStatus.SUCCESS : RegistrationStatus.FAIL_BAD_ROLE_SAVE;
+        return (userRoleService.saveUserRole(userRole) != null) ? RegistrationStatus.SUCCESS : RegistrationStatus.FAIL_BAD_ROLE_SAVE;
     }
 }

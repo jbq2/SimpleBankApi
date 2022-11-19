@@ -14,6 +14,7 @@ import java.util.List;
 
 @Component
 @Repository
+/* data access object for UserRole */
 public class UserRoleDao implements DataObjectAccessable<UserRole> {
 
     @Autowired

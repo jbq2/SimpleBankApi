@@ -13,6 +13,7 @@ import java.util.List;
 
 @Component
 @Repository
+/* data access object for Role */
 public class RoleDao implements DataObjectAccessable<Role> {
 
     @Autowired

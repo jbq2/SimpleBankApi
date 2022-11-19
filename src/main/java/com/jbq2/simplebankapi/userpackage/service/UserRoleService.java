@@ -12,13 +12,16 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
+/* so far only needed for registration */
+/* TODO: implement other basic service methods */
 public class UserRoleService {
     private final UserRoleDao userRoleDao;
 
+    /* gets the roles of a specific user */
     public List<RoleEnum> getUserRoles(Long id){
-        List<UserRole> rolesRaw = userRoleDao.findAllByUserId(id);
         List<RoleEnum> roles = new ArrayList<>();
-        for(UserRole userRole : rolesRaw){
+        for(UserRole userRole : userRoleDao.findAllByUserId(id)){
+            /* NOTE: this will be changed due to the possibility of adding more roles */
             if (userRole.getRole_id() == 1) {
                 roles.add(RoleEnum.ADMIN);
             }
@@ -28,4 +31,17 @@ public class UserRoleService {
         }
         return roles;
     }
+
+    /* TODO: find all user roles method */
+
+    /* TODO: find user role by id */
+
+    /* saves user role to database */
+    public UserRole saveUserRole(UserRole userRole){
+        return userRoleDao.save(userRole);
+    }
+
+    /* TODO: update user role method */
+
+    /* TODO: delete user role method */
 }

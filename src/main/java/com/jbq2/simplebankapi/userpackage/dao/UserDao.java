@@ -14,6 +14,7 @@ import java.util.List;
 
 @Component
 @Repository
+/* data access object for User */
 public class UserDao implements DataObjectAccessable<User> {
 
     @Autowired

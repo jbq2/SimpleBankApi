@@ -11,6 +11,7 @@ public class RegistrationController {
 
     @PostMapping("/register")
     public String register(@RequestBody Registration registration){
+        /* should send a String to FE as a response */
         return registrationService.validateAndSave(registration).name();
     }
 }
