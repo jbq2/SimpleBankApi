@@ -1,6 +1,5 @@
 package com.jbq2.simplebankapi.login;
 
-import com.jbq2.simplebankapi.userpackage.pojo.User;
 import com.jbq2.simplebankapi.userpackage.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,13 +14,11 @@ import java.util.regex.Pattern;
 public class LoginService {
 
     private UserService userService;
-    private Pattern pattern;
-    private Matcher matcher;
 
     public LoginStatus validateLogin(Login login){
         /* validating entered email */
-        pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$");
-        matcher = pattern.matcher(login.getEmail());
+        Pattern pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$");
+        Matcher matcher = pattern.matcher(login.getEmail());
         if(!matcher.find()){
             return LoginStatus.FAIL_BAD_EMAIL;
         }

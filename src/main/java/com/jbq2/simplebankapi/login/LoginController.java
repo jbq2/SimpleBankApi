@@ -53,6 +53,7 @@ public class LoginController {
         return new Response(
                 responseType,
                 httpStatus,
+                httpStatus.value(),
                 message,
                 new HashMap<>() {{
                     put("loginStatus", loginStatus);

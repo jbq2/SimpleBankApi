@@ -11,6 +11,7 @@ import java.util.Map;
 public class Response {
     private ResponseType responseType;
     private HttpStatus httpStatus;
+    private Integer statusCode;
     private String message;
-    private Map<String, ?> data;
+    private Map<String, ?> body;
 }

@@ -58,6 +58,7 @@ public class RegistrationController {
         return new Response(
                 responseType,
                 httpStatus,
+                httpStatus.value(),
                 message,
                 new HashMap<>() {{
                     put("registrationStatus", registrationStatus);
