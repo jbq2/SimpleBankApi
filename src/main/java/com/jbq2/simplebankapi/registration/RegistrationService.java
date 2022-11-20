@@ -23,13 +23,11 @@ public class RegistrationService {
     private final UserRoleService userRoleService;
 
     /* Pattern and Matcher objects for regex validation */
-    private Pattern pattern;
-    private Matcher matcher;
 
     public RegistrationStatus validateAndSave(Registration registration){
         /* validates email */
-        pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$");
-        matcher = pattern.matcher(registration.getEmail());
+        Pattern pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$");
+        Matcher matcher = pattern.matcher(registration.getEmail());
         if(!matcher.find()){
             return RegistrationStatus.FAIL_BAD_EMAIL;
         }

@@ -1,5 +1,6 @@
 package com.jbq2.simplebankapi.registration;
 
+import com.jbq2.simplebankapi.response.Response;
 import com.jbq2.simplebankapi.response.ResponseType;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -8,13 +9,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 
 @RestController
-@RequestMapping("api/v1/registration")
+@RequestMapping("api/v1/userRegistration")
 @AllArgsConstructor
 public class RegistrationController {
     private final RegistrationService registrationService;
 
     @PostMapping("/register")
-    public RegistrationResponse register(@RequestBody Registration registration){
+    @ResponseBody
+    public Response register(@RequestBody Registration registration){
         /* RegistrationStatus is returned */
         RegistrationStatus registrationStatus = registrationService.validateAndSave(registration);
 
@@ -52,13 +54,14 @@ public class RegistrationController {
             }
         }
 
-        /* return appropriate RegistrationResponse */
-        return new RegistrationResponse(
+        /* return appropriate Response */
+        return new Response(
                 responseType,
                 httpStatus,
-                registrationStatus,
+                httpStatus.value(),
                 message,
                 new HashMap<>() {{
+                    put("registrationStatus", registrationStatus);
                     put("registrationForm", registration);
                 }}
         );
