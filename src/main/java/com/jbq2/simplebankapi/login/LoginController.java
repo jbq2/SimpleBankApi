@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("api/v1/userLogin")
+@RequestMapping("api/v1")
 public class LoginController {
     private LoginService loginService;
 
