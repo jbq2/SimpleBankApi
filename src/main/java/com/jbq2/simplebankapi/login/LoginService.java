@@ -4,6 +4,7 @@ import com.jbq2.simplebankapi.userpackage.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.regex.Matcher;
@@ -16,6 +17,8 @@ public class LoginService {
     private UserService userService;
 
     public LoginStatus validateLogin(Login login){
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
         /* validating entered email */
         Pattern pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$");
         Matcher matcher = pattern.matcher(login.getEmail());
@@ -40,7 +43,8 @@ public class LoginService {
         }
 
         /* checking if passwords match */
-        if(!userDetails.getPassword().equals(login.getPassword())){
+        /* must user encoder to properly match */
+        if(!encoder.matches(login.getPassword(), userDetails.getPassword())){
             return LoginStatus.FAIL_INCORRECT_PASSWORD;
         }
 
