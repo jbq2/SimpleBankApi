@@ -20,7 +20,7 @@ public class LoginService {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
         /* validating entered email */
-        Pattern pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$");
+        Pattern pattern = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[a-zA-Z]{2,}$");
         Matcher matcher = pattern.matcher(login.getEmail());
         if(!matcher.find()){
             return LoginStatus.FAIL_BAD_EMAIL;
