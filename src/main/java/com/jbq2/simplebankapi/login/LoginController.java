@@ -29,7 +29,7 @@ public class LoginController {
             case SUCCESS -> {
                 responseType = ResponseType.SUCCESS;
                 httpStatus = HttpStatus.OK;
-                message = "Login successful!";
+                message = "SUCCESS";
             }
             case FAIL_BAD_EMAIL -> {
                 httpStatus = HttpStatus.EXPECTATION_FAILED;
