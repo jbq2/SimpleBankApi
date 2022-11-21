@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("/api/v1")
 @AllArgsConstructor
 public class RegistrationController {
     private final RegistrationService registrationService;
@@ -46,7 +46,7 @@ public class RegistrationController {
             }
             case FAIL_BAD_PASSWORD -> {
                 httpStatus = HttpStatus.EXPECTATION_FAILED;
-                message = "Password must be at least 8 characters long and must contain a special character.";
+                message = "Password must be at least 8 characters long and must contain 1 letter, 1 digit, and 1 special character.";
             }
             case FAIL_EMAIL_EXISTS -> {
                 httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -62,7 +62,7 @@ public class RegistrationController {
                 message,
                 new HashMap<>() {{
                     put("registrationStatus", registrationStatus);
-                    put("registrationForm", registration);
+                    put("registrationEmail", registration.getEmail());
                 }}
         );
     }

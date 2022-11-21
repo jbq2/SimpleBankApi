@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 @Data
 @EqualsAndHashCode
 @NoArgsConstructor
-@Component
 public class User implements Queryable {
     private Long id;
     private String email;

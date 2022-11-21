@@ -66,11 +66,10 @@ public class UserRoleDao implements DataObjectAccessable<UserRole> {
 
     @Override
     public UserRole save(UserRole userRole) {
-        String sql = "INSERT INTO user_role (id, user_id, role_id) " +
-                "VALUES (?, ?, ?)";
+        String sql = "INSERT INTO user_role (user_id, role_id) " +
+                "VALUES (?, ?)";
         try{
             jdbcTemplate.update(sql,
-                    userRole.getId(),
                     userRole.getUser_id(),
                     userRole.getRole_id());
             return userRole;

@@ -17,18 +17,18 @@ import java.util.regex.Pattern;
 public class RegistrationService {
 
     /* userpackage objects needed */
-    private User user;
-    private UserRole userRole;
     private final UserService userService;
     private final UserRoleService userRoleService;
 
     /* Pattern and Matcher objects for regex validation */
 
     public RegistrationStatus validateAndSave(Registration registration){
+        User user = new User();
+        UserRole userRole = new UserRole();
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
         /* validates email */
-        Pattern pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$");
+        Pattern pattern = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
         Matcher matcher = pattern.matcher(registration.getEmail());
         if(!matcher.find()){
             return RegistrationStatus.FAIL_BAD_EMAIL;
