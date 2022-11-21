@@ -1,12 +1,12 @@
 package com.jbq2.simplebankapi.registration;
 
-import com.jbq2.simplebankapi.userpackage.dao.UserRoleDao;
 import com.jbq2.simplebankapi.userpackage.pojo.RoleEnum;
 import com.jbq2.simplebankapi.userpackage.pojo.User;
 import com.jbq2.simplebankapi.userpackage.pojo.UserRole;
 import com.jbq2.simplebankapi.userpackage.service.UserRoleService;
 import com.jbq2.simplebankapi.userpackage.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.regex.Matcher;
@@ -25,6 +25,8 @@ public class RegistrationService {
     /* Pattern and Matcher objects for regex validation */
 
     public RegistrationStatus validateAndSave(Registration registration){
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
         /* validates email */
         Pattern pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$");
         Matcher matcher = pattern.matcher(registration.getEmail());
@@ -42,7 +44,8 @@ public class RegistrationService {
         if(!registration.getPassword().equals(registration.getMatching())){
             return RegistrationStatus.FAIL_BAD_MATCH;
         }
-        user.setPassword(registration.getPassword());
+        /* encode password before saving to db */
+        user.setPassword(encoder.encode(registration.getPassword()));
 
         /* DataAccessException if email UNIQUE constraint is violated */
         user = userService.saveUser(user);

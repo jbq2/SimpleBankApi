@@ -8,7 +8,7 @@ import java.util.Map;
 
 @Data
 @AllArgsConstructor
-public class Response {
+public class CustomResponse {
     private ResponseType responseType;
     private HttpStatus httpStatus;
     private Integer statusCode;

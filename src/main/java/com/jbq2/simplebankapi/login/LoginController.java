@@ -1,6 +1,6 @@
 package com.jbq2.simplebankapi.login;
 
-import com.jbq2.simplebankapi.response.Response;
+import com.jbq2.simplebankapi.response.CustomResponse;
 import com.jbq2.simplebankapi.response.ResponseType;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -9,13 +9,13 @@ import java.util.HashMap;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("api/v1/userLogin")
+@RequestMapping("api/v1")
 public class LoginController {
     private LoginService loginService;
 
     @PostMapping("/login")
     @ResponseBody
-    public Response loginUser(@RequestBody Login login){
+    public CustomResponse loginUser(@RequestBody Login login){
         /* validating login form, returns a specific LoginStatus */
         LoginStatus loginStatus = loginService.validateLogin(login);
 
@@ -29,7 +29,7 @@ public class LoginController {
             case SUCCESS -> {
                 responseType = ResponseType.SUCCESS;
                 httpStatus = HttpStatus.OK;
-                message = "Login successful!";
+                message = "SUCCESS";
             }
             case FAIL_BAD_EMAIL -> {
                 httpStatus = HttpStatus.EXPECTATION_FAILED;
@@ -50,7 +50,7 @@ public class LoginController {
         }
 
         /* return Response */
-        return new Response(
+        return new CustomResponse(
                 responseType,
                 httpStatus,
                 httpStatus.value(),

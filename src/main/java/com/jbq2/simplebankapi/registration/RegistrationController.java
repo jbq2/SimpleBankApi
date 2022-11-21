@@ -1,6 +1,6 @@
 package com.jbq2.simplebankapi.registration;
 
-import com.jbq2.simplebankapi.response.Response;
+import com.jbq2.simplebankapi.response.CustomResponse;
 import com.jbq2.simplebankapi.response.ResponseType;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 
 @RestController
-@RequestMapping("api/v1/userRegistration")
+@RequestMapping("api/v1")
 @AllArgsConstructor
 public class RegistrationController {
     private final RegistrationService registrationService;
 
     @PostMapping("/register")
     @ResponseBody
-    public Response register(@RequestBody Registration registration){
+    public CustomResponse register(@RequestBody Registration registration){
         /* RegistrationStatus is returned */
         RegistrationStatus registrationStatus = registrationService.validateAndSave(registration);
 
@@ -30,7 +30,7 @@ public class RegistrationController {
             case SUCCESS -> {
                 responseType = ResponseType.SUCCESS;
                 httpStatus = HttpStatus.OK;
-                message = "Registered Successfully.";
+                message = "SUCCESS";
             }
             case FAIL_BAD_ROLE_SAVE -> {
                 httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -46,7 +46,7 @@ public class RegistrationController {
             }
             case FAIL_BAD_PASSWORD -> {
                 httpStatus = HttpStatus.EXPECTATION_FAILED;
-                message = "Password must be at least 8 characters long and must contain a special character";
+                message = "Password must be at least 8 characters long and must contain a special character.";
             }
             case FAIL_EMAIL_EXISTS -> {
                 httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -55,7 +55,7 @@ public class RegistrationController {
         }
 
         /* return appropriate Response */
-        return new Response(
+        return new CustomResponse(
                 responseType,
                 httpStatus,
                 httpStatus.value(),
