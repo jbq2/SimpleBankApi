@@ -66,16 +66,13 @@ public class UserDao implements DataObjectAccessable<User> {
 
     @Override
     public User save(User user) {
-        String sql = "INSERT INTO USERS (id, email, password, created, updated) " +
-                "VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO USERS (email, password) " +
+                "VALUES (?, ?)";
 
         try{
             jdbcTemplate.update(sql,
-                    user.getId(),
                     user.getEmail(),
-                    user.getPassword(),
-                    user.getCreated(),
-                    user.getUpdated());
+                    user.getPassword());
             user = findByEmail(user.getEmail());
             return user;
         }

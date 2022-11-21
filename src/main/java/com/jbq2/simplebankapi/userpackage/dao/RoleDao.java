@@ -53,14 +53,11 @@ public class RoleDao implements DataObjectAccessable<Role> {
 
     @Override
     public Role save(Role role) {
-        String sql = "INSERT INTO roles (id, name, created, updated) " +
-                "VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO roles (name) " +
+                "VALUES (?)";
         try{
             jdbcTemplate.update(sql,
-                    role.getId(),
-                    role.getName(),
-                    role.getCreated(),
-                    role.getUpdated());
+                    role.getName());
             return role;
         }
         catch(DataAccessException e){
