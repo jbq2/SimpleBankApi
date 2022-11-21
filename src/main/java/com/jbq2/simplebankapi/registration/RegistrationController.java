@@ -1,6 +1,6 @@
 package com.jbq2.simplebankapi.registration;
 
-import com.jbq2.simplebankapi.response.Response;
+import com.jbq2.simplebankapi.response.CustomResponse;
 import com.jbq2.simplebankapi.response.ResponseType;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,7 @@ public class RegistrationController {
 
     @PostMapping("/register")
     @ResponseBody
-    public Response register(@RequestBody Registration registration){
+    public CustomResponse register(@RequestBody Registration registration){
         /* RegistrationStatus is returned */
         RegistrationStatus registrationStatus = registrationService.validateAndSave(registration);
 
@@ -55,7 +55,7 @@ public class RegistrationController {
         }
 
         /* return appropriate Response */
-        return new Response(
+        return new CustomResponse(
                 responseType,
                 httpStatus,
                 httpStatus.value(),

@@ -1,6 +1,6 @@
 package com.jbq2.simplebankapi.login;
 
-import com.jbq2.simplebankapi.response.Response;
+import com.jbq2.simplebankapi.response.CustomResponse;
 import com.jbq2.simplebankapi.response.ResponseType;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ public class LoginController {
 
     @PostMapping("/login")
     @ResponseBody
-    public Response loginUser(@RequestBody Login login){
+    public CustomResponse loginUser(@RequestBody Login login){
         /* validating login form, returns a specific LoginStatus */
         LoginStatus loginStatus = loginService.validateLogin(login);
 
@@ -50,7 +50,7 @@ public class LoginController {
         }
 
         /* return Response */
-        return new Response(
+        return new CustomResponse(
                 responseType,
                 httpStatus,
                 httpStatus.value(),
