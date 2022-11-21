@@ -30,7 +30,7 @@ public class RegistrationController {
             case SUCCESS -> {
                 responseType = ResponseType.SUCCESS;
                 httpStatus = HttpStatus.OK;
-                message = "Registered Successfully.";
+                message = "SUCCESS";
             }
             case FAIL_BAD_ROLE_SAVE -> {
                 httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
