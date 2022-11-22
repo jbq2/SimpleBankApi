@@ -62,7 +62,7 @@ public class RegistrationController {
                 message,
                 new HashMap<>() {{
                     put("registrationStatus", registrationStatus);
-                    put("registrationForm", registration);
+                    put("registrationEmail", registration.getEmail());
                 }}
         );
     }

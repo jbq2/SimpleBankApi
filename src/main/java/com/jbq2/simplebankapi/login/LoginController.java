@@ -57,7 +57,7 @@ public class LoginController {
                 message,
                 new HashMap<>() {{
                     put("loginStatus", loginStatus);
-                    put("loginForm", login);
+                    put("loginEmail", login.getEmail());
                 }}
         );
     }
