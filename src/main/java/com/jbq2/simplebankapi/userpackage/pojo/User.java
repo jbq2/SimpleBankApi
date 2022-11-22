@@ -5,7 +5,6 @@ import com.jbq2.simplebankapi.userpackage.dao.UserRoleDao;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,6 +22,8 @@ public class User implements Queryable, UserDetails {
     private String password;
     private String created;
     private String updated;
+
+    /* userRoleDao will be injected via setter */
     private UserRoleDao userRoleDao;
 
 
@@ -30,6 +31,8 @@ public class User implements Queryable, UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         List<String> rolesAsStrings = userRoleDao.findAllRoleNamesById(id);
+
+        /* populating authorities list with new SimpleGrantedAuthority objects */
         for(String role : rolesAsStrings){
             authorities.add(new SimpleGrantedAuthority(role));
         }

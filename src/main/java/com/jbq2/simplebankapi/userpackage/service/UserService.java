@@ -15,20 +15,21 @@ import java.util.List;
 @AllArgsConstructor
 /* implements UserDetailsService for using Spring Security features */
 public class UserService implements UserDetailsService {
-
     private final UserDao userDao;
     private final UserRoleDao userRoleDao;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        /* get the user by email */
         User user = userDao.findByEmail(email);
 
+        /* return null if user is null */
         if(user == null){
             return null;
         }
 
+        /* if user is not null, injecting userRoleDao is safe */
         user.setUserRoleDao(userRoleDao);
-
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(), user.getPassword(),
                 user.isEnabled(), user.isAccountNonExpired(), user.isCredentialsNonExpired(), user.isAccountNonLocked(),
