@@ -12,9 +12,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/* data access object for User */
 @Component
 @Repository
-/* data access object for User */
 public class UserDao implements DataObjectAccessable<User> {
 
     @Autowired

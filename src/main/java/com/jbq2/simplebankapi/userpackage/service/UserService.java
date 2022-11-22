@@ -1,6 +1,7 @@
 package com.jbq2.simplebankapi.userpackage.service;
 
 import com.jbq2.simplebankapi.userpackage.dao.UserDao;
+import com.jbq2.simplebankapi.userpackage.dao.UserRoleDao;
 import com.jbq2.simplebankapi.userpackage.pojo.User;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +17,7 @@ import java.util.List;
 public class UserService implements UserDetailsService {
 
     private final UserDao userDao;
-    private final UserRoleService userRoleService;
+    private final UserRoleDao userRoleDao;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -26,9 +27,11 @@ public class UserService implements UserDetailsService {
             return null;
         }
 
+        user.setUserRoleDao(userRoleDao);
+
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(), user.getPassword(),
-                user.isEnabled(), user.isAccountNonExpired(), !user.isCredentialsNonExpired(), !user.isAccountNonLocked(),
+                user.isEnabled(), user.isAccountNonExpired(), user.isCredentialsNonExpired(), user.isAccountNonLocked(),
                 user.getAuthorities()
         );
     }

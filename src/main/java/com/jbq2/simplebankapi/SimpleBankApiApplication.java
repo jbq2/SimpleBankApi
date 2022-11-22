@@ -1,5 +1,6 @@
 package com.jbq2.simplebankapi;
 
+import com.jbq2.simplebankapi.userpackage.pojo.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

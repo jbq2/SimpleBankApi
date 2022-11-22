@@ -5,6 +5,7 @@ import com.jbq2.simplebankapi.userpackage.dao.UserRoleDao;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,9 +13,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import static com.jbq2.simplebankapi.userpackage.pojo.RoleEnum.ADMIN;
-import static com.jbq2.simplebankapi.userpackage.pojo.RoleEnum.USER;
 
 @Data
 @EqualsAndHashCode
@@ -26,6 +24,7 @@ public class User implements Queryable, UserDetails {
     private String created;
     private String updated;
     private UserRoleDao userRoleDao;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -11,9 +11,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/* data access object for User */
 @Component
 @Repository
-/* data access object for Role */
 public class RoleDao implements DataObjectAccessable<Role> {
 
     @Autowired
