@@ -8,6 +8,7 @@ import com.jbq2.simplebankapi.userpackage.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import static com.jbq2.simplebankapi.registration.RegistrationStatus.*;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,7 +32,7 @@ public class RegistrationService {
         Pattern pattern = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
         Matcher matcher = pattern.matcher(registration.getEmail());
         if(!matcher.find()){
-            return RegistrationStatus.FAIL_BAD_EMAIL;
+            return FAIL_BAD_EMAIL;
         }
         user.setEmail(registration.getEmail());
 
@@ -39,10 +40,10 @@ public class RegistrationService {
         pattern = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$");
         matcher = pattern.matcher(registration.getPassword());
         if(!matcher.find()){
-            return RegistrationStatus.FAIL_BAD_PASSWORD;
+            return FAIL_BAD_PASSWORD;
         }
         if(!registration.getPassword().equals(registration.getMatching())){
-            return RegistrationStatus.FAIL_BAD_MATCH;
+            return FAIL_BAD_MATCH;
         }
         /* encode password before saving to db */
         user.setPassword(encoder.encode(registration.getPassword()));
@@ -50,12 +51,12 @@ public class RegistrationService {
         /* DataAccessException if email UNIQUE constraint is violated */
         user = userService.saveUser(user);
         if(user == null){
-            return RegistrationStatus.FAIL_EMAIL_EXISTS;
+            return FAIL_EMAIL_EXISTS;
         }
 
         /* saves user_role, throws error if non unique */
         userRole.setUser_id(user.getId());
         userRole.setRole_id(RoleEnum.USER.getValue());
-        return (userRoleService.saveUserRole(userRole) != null) ? RegistrationStatus.SUCCESS : RegistrationStatus.FAIL_BAD_ROLE_SAVE;
+        return (userRoleService.saveUserRole(userRole) != null) ? SUCCESS : FAIL_BAD_ROLE_SAVE;
     }
 }

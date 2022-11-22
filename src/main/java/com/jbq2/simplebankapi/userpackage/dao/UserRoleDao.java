@@ -9,7 +9,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
 import java.util.List;
 
 @Component
@@ -20,7 +19,7 @@ public class UserRoleDao implements DataObjectAccessable<UserRole> {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    RowMapper<UserRole> rowMapper = ((rs, rowNum) -> {
+    RowMapper<UserRole> userRoleRowMapper = ((rs, rowNum) -> {
        UserRole userRole = new UserRole();
        userRole.setId(rs.getLong("id"));
        userRole.setUser_id(rs.getLong("user_id"));
@@ -30,11 +29,29 @@ public class UserRoleDao implements DataObjectAccessable<UserRole> {
        return userRole;
     });
 
+    RowMapper<String> stringRowMapper = ((rs, rowNum) -> {
+        return rs.getString("name");
+    });
+
     @Override
     public List<UserRole> findAll() {
         String sql = "SELECT * FROM user_role";
         try{
-            return jdbcTemplate.query(sql, rowMapper);
+            return jdbcTemplate.query(sql, userRoleRowMapper);
+        }
+        catch(DataAccessException e){
+            return null;
+        }
+    }
+
+    public List<String> findAllRoleNamesById(Long id){
+        String sql = "SELECT roles.name " +
+                "FROM roles INNER JOIN user_role ON roles.id = user_role.role_id " +
+                "INNER JOIN users ON users.id = user_role.user_id " +
+                "WHERE users.id = ?;";
+
+        try{
+            return jdbcTemplate.query(sql, stringRowMapper, id);
         }
         catch(DataAccessException e){
             return null;
@@ -45,7 +62,7 @@ public class UserRoleDao implements DataObjectAccessable<UserRole> {
         String sql = "SELECT * FROM user_role " +
                 "WHERE user_id = ?";
         try{
-            return jdbcTemplate.query(sql, rowMapper, id);
+            return jdbcTemplate.query(sql, userRoleRowMapper, id);
         }
         catch(DataAccessException e){
             return null;
@@ -57,7 +74,7 @@ public class UserRoleDao implements DataObjectAccessable<UserRole> {
         String sql = "SELECT * FROM user_role " +
                 "WHERE id = ?";
         try{
-            return jdbcTemplate.queryForObject(sql, rowMapper, id);
+            return jdbcTemplate.queryForObject(sql, userRoleRowMapper, id);
         }
         catch(DataAccessException e){
             return null;
