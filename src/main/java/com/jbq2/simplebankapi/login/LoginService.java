@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import static com.jbq2.simplebankapi.login.LoginStatus.*;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,14 +24,14 @@ public class LoginService {
         Pattern pattern = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[a-zA-Z]{2,}$");
         Matcher matcher = pattern.matcher(login.getEmail());
         if(!matcher.find()){
-            return LoginStatus.FAIL_BAD_EMAIL;
+            return FAIL_BAD_EMAIL;
         }
 
         /* validating entered password */
         pattern = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$");
         matcher = pattern.matcher(login.getPassword());
         if (!matcher.find()){
-            return LoginStatus.FAIL_BAD_PASSWORD;
+            return FAIL_BAD_PASSWORD;
         }
 
         /* fetching user using loadUserByUsername */
@@ -39,13 +40,13 @@ public class LoginService {
             userDetails = userService.loadUserByUsername(login.getEmail());
         }
         catch(UsernameNotFoundException e){
-            return LoginStatus.FAIL_EMAIL_NOT_EXIST;
+            return FAIL_EMAIL_NOT_EXIST;
         }
 
         /* checking if passwords match */
         /* must user encoder to properly match */
         if(!encoder.matches(login.getPassword(), userDetails.getPassword())){
-            return LoginStatus.FAIL_INCORRECT_PASSWORD;
+            return FAIL_INCORRECT_PASSWORD;
         }
 
         return LoginStatus.SUCCESS;
