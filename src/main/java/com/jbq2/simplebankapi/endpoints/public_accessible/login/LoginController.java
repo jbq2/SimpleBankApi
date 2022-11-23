@@ -23,6 +23,7 @@ public class LoginController {
         ResponseType responseType = ResponseType.ERROR;
         HttpStatus httpStatus = HttpStatus.NOT_ACCEPTABLE;
         String message = "";
+        String loginMessage = "";
 
         /* customizing parameters based on returned loginStatus */
         switch(loginStatus){
@@ -30,26 +31,32 @@ public class LoginController {
                 responseType = ResponseType.SUCCESS;
                 httpStatus = HttpStatus.OK;
                 message = "SUCCESS";
+                loginMessage = "Login attempt was successful";
             }
             case FAIL_BAD_EMAIL -> {
                 httpStatus = HttpStatus.EXPECTATION_FAILED;
                 message = "Invalid email format.";
+                loginMessage = "Login attempt failed; likely due to the regex rejecting the entered email";
             }
             case FAIL_BAD_PASSWORD -> {
                 httpStatus = HttpStatus.EXPECTATION_FAILED;
                 message = "Invalid password format.";
+                loginMessage = "Login attempt failed; likely due to the regex rejecting the entered password";
             }
             case FAIL_EMAIL_NOT_EXIST -> {
                 httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
                 message = "Email was not found.";
+                loginMessage = "Login attempt failed; loginService was not able to find the entered email in the database";
             }
             case FAIL_INCORRECT_PASSWORD -> {
                 httpStatus = HttpStatus.EXPECTATION_FAILED;
                 message = "Incorrect password.";
+                loginMessage = "Login attempt failed; the entered password does not match the user's password in the database";
             }
         }
 
         /* return Response */
+        final String finalLoginMessage = loginMessage;
         return new CustomResponse(
                 responseType,
                 httpStatus,
@@ -58,6 +65,7 @@ public class LoginController {
                 new HashMap<>() {{
                     put("loginStatus", loginStatus);
                     put("loginEmail", login.getEmail());
+                    put("loginMessage", finalLoginMessage);
                 }}
         );
     }
