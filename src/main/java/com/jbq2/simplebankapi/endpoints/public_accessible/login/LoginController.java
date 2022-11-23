@@ -1,21 +1,30 @@
 package com.jbq2.simplebankapi.endpoints.public_accessible.login;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jbq2.simplebankapi.response.CustomResponse;
 import com.jbq2.simplebankapi.response.ResponseType;
+import com.jbq2.simplebankapi.user_packages.dao.UserDao;
+import com.jbq2.simplebankapi.user_packages.pojo.User;
+import com.jbq2.simplebankapi.user_packages.service.UserRoleService;
+import com.jbq2.simplebankapi.user_packages.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1")
 public class LoginController {
     private LoginService loginService;
+    private UserService userService;
 
     @PostMapping("/login")
     @ResponseBody
-    public CustomResponse loginUser(@RequestBody Login login){
+    public CustomResponse loginUser(@RequestBody Login login) throws JsonProcessingException {
         /* validating login form, returns a specific LoginStatus */
         LoginStatus loginStatus = loginService.validateLogin(login);
 
@@ -24,6 +33,7 @@ public class LoginController {
         HttpStatus httpStatus = HttpStatus.NOT_ACCEPTABLE;
         String message = "";
         String loginMessage = "";
+        UserDetails userDetails = null;
 
         /* customizing parameters based on returned loginStatus */
         switch(loginStatus){
@@ -32,6 +42,7 @@ public class LoginController {
                 httpStatus = HttpStatus.OK;
                 message = "SUCCESS";
                 loginMessage = "Login attempt was successful";
+                userDetails = userService.loadUserByUsername(login.getEmail());
             }
             case FAIL_BAD_EMAIL -> {
                 httpStatus = HttpStatus.EXPECTATION_FAILED;
@@ -56,6 +67,8 @@ public class LoginController {
         }
 
         /* return Response */
+        ObjectMapper mapper = new ObjectMapper();
+        final String userDetailsJson = (userDetails == null) ? null : mapper.writeValueAsString(userDetails);
         final String finalLoginMessage = loginMessage;
         return new CustomResponse(
                 responseType,
@@ -66,6 +79,7 @@ public class LoginController {
                     put("loginStatus", loginStatus);
                     put("loginEmail", login.getEmail());
                     put("loginMessage", finalLoginMessage);
+                    put("userDetails", userDetailsJson);
                 }}
         );
     }
