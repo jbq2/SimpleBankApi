@@ -1,5 +1,7 @@
 package com.jbq2.simplebankapi.security;
 
+/* constants below are mainly used for jwt portion of this api */
+
 public class SecurityConstant {
     public static final long EXPIRATION_TIME = 3_600_000;
     public static final String TOKEN_PREFIX = "Bearer ";
