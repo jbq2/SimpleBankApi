@@ -40,7 +40,7 @@ public class RegistrationService {
         pattern = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$");
         matcher = pattern.matcher(registration.getPassword());
         if(!matcher.find()){
-            throw new InvalidPasswordException("Password does not meet requirements (At least 8 characters, no spaces, and contains at least 1 letter, 1 digit, and 1 special character)");
+            throw new InvalidPasswordException("Password does not meet requirements (At least 8 characters, no spaces, and contains at least 1 letter, 1 digit, and 1 special character).");
         }
         if(!registration.getPassword().equals(registration.getMatching())){
             throw new NonMatchingPasswordsException("Password confirmation does not match the password.");
