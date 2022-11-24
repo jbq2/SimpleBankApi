@@ -1,8 +1,6 @@
 package com.jbq2.simplebankapi.session_management;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jbq2.simplebankapi.session_management.exceptions.NonExistingUserSessionException;
+import com.jbq2.simplebankapi.session_management.exceptions.UserSessionNotFoundException;
 import com.jbq2.simplebankapi.user_packages.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,7 +18,8 @@ public class UserSessionService {
     private final UserService userService;
     private final HttpServletRequest request;
 
-    /* createUserSession will only be called in the backend and not from a controller */
+
+    /* createUserSession will only be called by LoginService */
     public String createUserSession(String email) {
         /* gets the userDetails given the email */
         UserDetails userDetails = userService.loadUserByUsername(email);
@@ -37,7 +36,7 @@ public class UserSessionService {
         return httpSession.getId();
     }
 
-    public Collection<? extends GrantedAuthority> getUserSessionData() throws NonExistingUserSessionException {
+    public Collection<? extends GrantedAuthority> getUserSessionData() throws UserSessionNotFoundException {
         HttpSession httpSession = request.getSession(); /* get the session (automatically creates if there isn't one) */
         /* NOTE: if there is no existing session, the newly created session will not have the AUTHORITIES attribute */
         Collection<? extends GrantedAuthority> authorities = (Collection<? extends GrantedAuthority>) httpSession.getAttribute("AUTHORITIES");
@@ -45,7 +44,7 @@ public class UserSessionService {
             /* if authorities is null, then there did not exist a session for the user */
             /* invalidate the newly created session and throw an error */
             request.getSession().invalidate();
-            throw new NonExistingUserSessionException("There does not exist a session for this user.  Fix by creating a session of the user (by advising the user to login or register and login with a new account)");
+            throw new UserSessionNotFoundException("There does not exist a session for this user.  Fix by creating a session of the user (by advising the user to login or register and login with a new account)");
         }
         /* it is assumed that AUTHORITIES attribute always holds data for a Collection of GrantedAuthority objects */
         return (Collection<? extends GrantedAuthority>) httpSession.getAttribute("AUTHORITIES");

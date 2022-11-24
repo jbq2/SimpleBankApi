@@ -1,15 +1,13 @@
 package com.jbq2.simplebankapi.session_management;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.jbq2.simplebankapi.response.CustomResponse;
 import com.jbq2.simplebankapi.response.ResponseType;
-import com.jbq2.simplebankapi.session_management.exceptions.NonExistingUserSessionException;
+import com.jbq2.simplebankapi.session_management.exceptions.UserSessionNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,15 +19,14 @@ public class UserSessionController {
     private UserSessionService userSessionService;
 
     /* TODO: this is only for testing, so remove afterwards */
+    /*
     @PostMapping("/createTest")
     public CustomResponse createSession(@RequestParam("email") String email) throws JsonProcessingException {
-        /* initialize CustomResponse variables */
         ResponseType responseType = ResponseType.SUCCESS;
         HttpStatus httpStatus = HttpStatus.OK;
         String message = "SUCCESS";
         String userDetailsJson = null;
 
-        /* try catch to handle errors from createUserSession */
         try{
             userDetailsJson = userSessionService.createUserSession(email);
         }
@@ -39,7 +36,6 @@ public class UserSessionController {
             message = e.toString();
         }
 
-        /* create body, fill if userDetailsJson is not null */
         Map<String, String> body = null;
         if(userDetailsJson != null){
             body = new HashMap<>();
@@ -54,9 +50,10 @@ public class UserSessionController {
                 body
         );
     }
+    */
 
     @GetMapping("/authoritiesOfUser")
-    public CustomResponse getUserAuthorities() throws NonExistingUserSessionException {
+    public CustomResponse getUserAuthorities() throws UserSessionNotFoundException {
         /* initialize variables */
         Collection<? extends GrantedAuthority> authorities = null;
         HttpStatus httpStatus = HttpStatus.OK;
@@ -67,7 +64,7 @@ public class UserSessionController {
             /* should return null and throw Exception if getAuthorities() fails */
             authorities = userSessionService.getUserSessionData();
         }
-        catch(NonExistingUserSessionException e){
+        catch(UserSessionNotFoundException e){
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
             responseType = ResponseType.ERROR;
             message = "You must be logged in to perform this action.";
