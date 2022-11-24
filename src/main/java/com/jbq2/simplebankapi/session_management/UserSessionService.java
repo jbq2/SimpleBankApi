@@ -16,15 +16,15 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
+@SuppressWarnings("unchecked")
 public class UserSessionService {
     private final ObjectMapper objectMapper;
     private final UserService userService;
 
-    /* TODO: the info should really be userDetails object in from of JSON */
+    /* createUserSession will only be called in the backend and not from a controller */
     public String createUserSession(String email, HttpServletRequest request) throws JsonProcessingException {
         UserDetails userDetails = userService.loadUserByUsername(email);
 
-        @SuppressWarnings("unchecked")
         List<String> sessionInfo = (List<String>) request.getSession().getAttribute(email);
         if(sessionInfo == null){
             sessionInfo = new ArrayList<>();
@@ -34,7 +34,6 @@ public class UserSessionService {
         String userDetailsJson = objectMapper.writeValueAsString(userDetails);
         sessionInfo.add(userDetailsJson);
         request.getSession().setAttribute("SESSION_INFO", sessionInfo);
-        /* TODO: should really return a CustomResponse */
         return userDetailsJson;
     }
 
