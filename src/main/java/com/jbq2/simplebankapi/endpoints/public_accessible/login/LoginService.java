@@ -20,7 +20,7 @@ public class LoginService {
 
     private UserService userService;
 
-    public LoginStatus validateLogin(Login login){
+    public UserDetails validateLogin(Login login){
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
         /* validating entered email */
@@ -52,6 +52,6 @@ public class LoginService {
             throw new IncorrectPasswordException("Entered password was incorrect");
         }
 
-        return LoginStatus.SUCCESS;
+        return userDetails;
     }
 }

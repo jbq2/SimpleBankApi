@@ -20,13 +20,7 @@ public class UserSessionService {
 
 
     /* createUserSession will only be called by LoginService */
-    public String createUserSession(String email) {
-        /* gets the userDetails given the email */
-        UserDetails userDetails = userService.loadUserByUsername(email);
-        if(userDetails == null){
-            /* returns null if there exists no user with the given email */
-            return null;
-        }
+    public String createUserSession(UserDetails userDetails) {
 
         /* TODO: create NEW SESSION for each user !! */
         request.getSession().invalidate(); /* invalidate session whenever you login */
