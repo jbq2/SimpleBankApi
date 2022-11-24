@@ -1,6 +1,7 @@
 package com.jbq2.simplebankapi.endpoints.public_accessible.login;
 
-import com.jbq2.simplebankapi.endpoints.public_accessible.login.exceptions.CustomLoginException;
+import com.jbq2.simplebankapi.endpoints.public_accessible.exceptions.CustomLoginException;
+import com.jbq2.simplebankapi.endpoints.public_accessible.exceptions.ValidationException;
 import com.jbq2.simplebankapi.response.CustomResponse;
 import com.jbq2.simplebankapi.response.ResponseType;
 import com.jbq2.simplebankapi.session_management.UserSessionService;
@@ -29,7 +30,7 @@ public class LoginController {
         HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         String message = "";
         UserDetails userDetails = null;
-        CustomLoginException exception = null;
+        RuntimeException exception = null;
         String sessionId = null;
 
         try{
@@ -39,15 +40,22 @@ public class LoginController {
             message = "SUCCESS";
             sessionId = userSessionService.createUserSession(userDetails);
         }
+        catch(ValidationException e){
+            /* ValidationException can be thrown by validateLogin */
+            exception = e;
+            responseType = ResponseType.ERROR;
+            httpStatus = HttpStatus.EXPECTATION_FAILED;
+            message = e.getMessage();
+        }
         catch(CustomLoginException e) {
-            /* exception from validateLogin() will be caught and handled as follows */
+            /* CustomLoginException can be thrown by validateLogin */
             exception = e;
             responseType = ResponseType.ERROR;
             message = e.getMessage();
         }
 
         /* return Response, requires finalizing certain variables to insert into CustomResponse body */
-        final CustomLoginException finalException = exception;
+        final RuntimeException finalException = exception;
         final String userEmail = (userDetails != null) ? userDetails.getUsername() : null;
         final Collection<? extends GrantedAuthority> authorities = (userDetails != null) ? userDetails.getAuthorities() : null;
         final String finalSessionId = sessionId;

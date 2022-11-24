@@ -1,7 +1,7 @@
-package com.jbq2.simplebankapi.endpoints.public_accessible.login.exceptions;
+package com.jbq2.simplebankapi.endpoints.public_accessible.exceptions;
 
 
-public class CustomLoginException extends RuntimeException{
+public class CustomLoginException extends RuntimeException {
     public CustomLoginException(String msg) {
         super(msg);
     }

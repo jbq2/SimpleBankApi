@@ -1,5 +1,6 @@
 package com.jbq2.simplebankapi.endpoints.public_accessible.registration;
 
+import com.jbq2.simplebankapi.endpoints.public_accessible.exceptions.*;
 import com.jbq2.simplebankapi.user_packages.pojo.RoleEnum;
 import com.jbq2.simplebankapi.user_packages.pojo.User;
 import com.jbq2.simplebankapi.user_packages.pojo.UserRole;
@@ -22,7 +23,7 @@ public class RegistrationService {
 
     /* Pattern and Matcher objects for regex validation */
 
-    public RegistrationStatus validateAndSave(Registration registration){
+    public String validateAndSave(Registration registration){
         User user = new User();
         UserRole userRole = new UserRole();
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -31,7 +32,7 @@ public class RegistrationService {
         Pattern pattern = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
         Matcher matcher = pattern.matcher(registration.getEmail());
         if(!matcher.find()){
-            return RegistrationStatus.FAIL_BAD_EMAIL;
+            throw new InvalidEmailException("Email is incorrectly formatted.");
         }
         user.setEmail(registration.getEmail());
 
@@ -39,10 +40,10 @@ public class RegistrationService {
         pattern = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$");
         matcher = pattern.matcher(registration.getPassword());
         if(!matcher.find()){
-            return RegistrationStatus.FAIL_BAD_PASSWORD;
+            throw new InvalidPasswordException("Password does not meet requirements (At least 8 characters, no spaces, and contains at least 1 letter, 1 digit, and 1 special character)");
         }
         if(!registration.getPassword().equals(registration.getMatching())){
-            return RegistrationStatus.FAIL_BAD_MATCH;
+            throw new NonMatchingPasswordsException("Password confirmation does not match the password.");
         }
         /* encode password before saving to db */
         user.setPassword(encoder.encode(registration.getPassword()));
@@ -50,12 +51,15 @@ public class RegistrationService {
         /* DataAccessException if email UNIQUE constraint is violated */
         user = userService.saveUser(user);
         if(user == null){
-            return RegistrationStatus.FAIL_EMAIL_EXISTS;
+            throw new EmailAlreadyExistsException("Email already exists.");
         }
 
         /* saves user_role, throws error if non unique */
         userRole.setUser_id(user.getId());
         userRole.setRole_id(RoleEnum.USER.getValue());
-        return (userRoleService.saveUserRole(userRole) != null) ? RegistrationStatus.SUCCESS : RegistrationStatus.FAIL_BAD_ROLE_SAVE;
+        if(userRoleService.saveUserRole(userRole) == null){
+            throw new UserAlreadyHasRoleException("User-role combination already exists.");
+        }
+        return registration.getEmail();
     }
 }

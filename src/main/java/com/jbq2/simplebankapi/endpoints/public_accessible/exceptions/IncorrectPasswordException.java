@@ -1,4 +1,4 @@
-package com.jbq2.simplebankapi.endpoints.public_accessible.login.exceptions;
+package com.jbq2.simplebankapi.endpoints.public_accessible.exceptions;
 
 public class IncorrectPasswordException extends CustomLoginException {
     public IncorrectPasswordException(String msg){

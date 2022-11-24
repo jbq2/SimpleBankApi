@@ -1,9 +1,9 @@
 package com.jbq2.simplebankapi.endpoints.public_accessible.login;
 
-import com.jbq2.simplebankapi.endpoints.public_accessible.login.exceptions.EmailNotFoundException;
-import com.jbq2.simplebankapi.endpoints.public_accessible.login.exceptions.IncorrectPasswordException;
-import com.jbq2.simplebankapi.endpoints.public_accessible.login.exceptions.InvalidEmailException;
-import com.jbq2.simplebankapi.endpoints.public_accessible.login.exceptions.InvalidPasswordException;
+import com.jbq2.simplebankapi.endpoints.public_accessible.exceptions.EmailNotFoundException;
+import com.jbq2.simplebankapi.endpoints.public_accessible.exceptions.IncorrectPasswordException;
+import com.jbq2.simplebankapi.endpoints.public_accessible.exceptions.InvalidEmailException;
+import com.jbq2.simplebankapi.endpoints.public_accessible.exceptions.InvalidPasswordException;
 import com.jbq2.simplebankapi.user_packages.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
