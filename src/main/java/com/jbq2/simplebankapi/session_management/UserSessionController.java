@@ -18,10 +18,11 @@ import java.util.Map;
 @AllArgsConstructor
 public class UserSessionController {
     private UserSessionService userSessionService;
+    private HttpServletRequest httpServletRequest;
 
     /* TODO: this is only for testing, so remove afterwards */
     @PostMapping("/createTest")
-    public CustomResponse createSession(@RequestParam("email") String email, HttpServletRequest request) throws JsonProcessingException {
+    public CustomResponse createSession(@RequestParam("email") String email) throws JsonProcessingException {
         /* initialize CustomResponse variables */
         ResponseType responseType = ResponseType.SUCCESS;
         HttpStatus httpStatus = HttpStatus.OK;
@@ -30,7 +31,7 @@ public class UserSessionController {
 
         /* try catch to handle errors from createUserSession */
         try{
-            userDetailsJson = userSessionService.createUserSession(email, request);
+            userDetailsJson = userSessionService.createUserSession(email, httpServletRequest);
         }
         catch(Exception e){
             responseType = ResponseType.ERROR;
@@ -54,8 +55,8 @@ public class UserSessionController {
         );
     }
 
-    @GetMapping("/authorities")
-    public CustomResponse getUserAuthorities(@RequestParam("email") String email, HttpServletRequest request) throws JsonProcessingException {
+    @GetMapping("/authoritiesOfUser")
+    public CustomResponse getUserAuthorities(@RequestParam("email") String email) throws JsonProcessingException {
         /* initialize variables */
         Collection<? extends GrantedAuthority> authorities = null;
         HttpStatus httpStatus = HttpStatus.OK;
@@ -64,7 +65,7 @@ public class UserSessionController {
 
         try{
             /* should return null and throw Exception if getAuthorities() fails */
-            authorities = userSessionService.getUserSessionData(email, request).getAuthorities();
+            authorities = userSessionService.getUserSessionData(email, httpServletRequest).getAuthorities();
         }
         catch(Exception e){
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -88,14 +89,28 @@ public class UserSessionController {
         );
     }
 
-    @DeleteMapping("/delete")
-    public CustomResponse deleteUserSession(HttpServletRequest request){
-        userSessionService.deleteUserSession(request);
+    @DeleteMapping("/deleteUserSession")
+    public CustomResponse deleteUserSession(@RequestParam("email") String email){
+        userSessionService.deleteUserSession(email, httpServletRequest);
+
         return new CustomResponse(
                 ResponseType.SUCCESS,
                 HttpStatus.OK,
                 HttpStatus.OK.value(),
-                "DELETED",
+                "DELETED SESSION " + email,
+                null
+        );
+    }
+
+    @DeleteMapping("/deleteEntireSession")
+    public CustomResponse deleteEntireSession(){
+        userSessionService.deleteEntireSession(httpServletRequest);
+
+        return new CustomResponse(
+                ResponseType.SUCCESS,
+                HttpStatus.OK,
+                HttpStatus.OK.value(),
+                "DELETED ENTIRE SESSION",
                 null
         );
     }
