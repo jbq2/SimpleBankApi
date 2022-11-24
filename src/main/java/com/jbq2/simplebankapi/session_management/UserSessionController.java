@@ -3,6 +3,7 @@ package com.jbq2.simplebankapi.session_management;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.jbq2.simplebankapi.response.CustomResponse;
 import com.jbq2.simplebankapi.response.ResponseType;
+import com.jbq2.simplebankapi.session_management.exceptions.NonExistingUserSessionException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,7 +19,6 @@ import java.util.Map;
 @AllArgsConstructor
 public class UserSessionController {
     private UserSessionService userSessionService;
-    private HttpServletRequest httpServletRequest;
 
     /* TODO: this is only for testing, so remove afterwards */
     @PostMapping("/createTest")
@@ -31,7 +31,7 @@ public class UserSessionController {
 
         /* try catch to handle errors from createUserSession */
         try{
-            userDetailsJson = userSessionService.createUserSession(email, httpServletRequest);
+            userDetailsJson = userSessionService.createUserSession(email);
         }
         catch(Exception e){
             responseType = ResponseType.ERROR;
@@ -43,7 +43,7 @@ public class UserSessionController {
         Map<String, String> body = null;
         if(userDetailsJson != null){
             body = new HashMap<>();
-            body.put("userDetailsJson", userDetailsJson);
+            body.put("sessionId", userDetailsJson);
         }
 
         return new CustomResponse(
@@ -56,7 +56,7 @@ public class UserSessionController {
     }
 
     @GetMapping("/authoritiesOfUser")
-    public CustomResponse getUserAuthorities(@RequestParam("email") String email) throws JsonProcessingException {
+    public CustomResponse getUserAuthorities() throws NonExistingUserSessionException {
         /* initialize variables */
         Collection<? extends GrantedAuthority> authorities = null;
         HttpStatus httpStatus = HttpStatus.OK;
@@ -65,12 +65,12 @@ public class UserSessionController {
 
         try{
             /* should return null and throw Exception if getAuthorities() fails */
-            authorities = userSessionService.getUserSessionData(email, httpServletRequest).getAuthorities();
+            authorities = userSessionService.getUserSessionData();
         }
-        catch(Exception e){
+        catch(NonExistingUserSessionException e){
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
             responseType = ResponseType.ERROR;
-            message = "Unable to gather session data from " + email;
+            message = "You must be logged in to perform this action.";
         }
 
         /* prepare body of CustomResponse depending on responseType */
@@ -89,28 +89,15 @@ public class UserSessionController {
         );
     }
 
-    @DeleteMapping("/deleteUserSession")
-    public CustomResponse deleteUserSession(@RequestParam("email") String email){
-        userSessionService.deleteUserSession(email, httpServletRequest);
+    @DeleteMapping("/end")
+    public CustomResponse endSession(){
+        userSessionService.deleteSession();
 
         return new CustomResponse(
                 ResponseType.SUCCESS,
                 HttpStatus.OK,
                 HttpStatus.OK.value(),
-                "DELETED SESSION " + email,
-                null
-        );
-    }
-
-    @DeleteMapping("/deleteEntireSession")
-    public CustomResponse deleteEntireSession(){
-        userSessionService.deleteEntireSession(httpServletRequest);
-
-        return new CustomResponse(
-                ResponseType.SUCCESS,
-                HttpStatus.OK,
-                HttpStatus.OK.value(),
-                "DELETED ENTIRE SESSION",
+                "ENDED SESSION",
                 null
         );
     }
