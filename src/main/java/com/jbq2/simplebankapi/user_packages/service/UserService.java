@@ -25,7 +25,7 @@ public class UserService implements UserDetailsService {
 
         /* return null if user is null */
         if(user == null){
-            return null;
+            throw new UsernameNotFoundException("Email not found");
         }
 
         /* if user is not null, injecting userRoleDao is safe */

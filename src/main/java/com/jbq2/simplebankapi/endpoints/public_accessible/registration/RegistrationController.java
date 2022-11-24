@@ -24,6 +24,7 @@ public class RegistrationController {
         ResponseType responseType = ResponseType.ERROR;
         HttpStatus httpStatus = HttpStatus.NOT_ACCEPTABLE;
         String message = "";
+        String registerMessage = "";
 
         /* set the parameters based on the registrationStatus */
         switch(registrationStatus){
@@ -31,30 +32,37 @@ public class RegistrationController {
                 responseType = ResponseType.SUCCESS;
                 httpStatus = HttpStatus.OK;
                 message = "SUCCESS";
+                registerMessage = "Registration was successful";
             }
             case FAIL_BAD_ROLE_SAVE -> {
                 httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
                 message = "User-role combination already exists.";
+                registerMessage = "Registration attempt failed; the entered email already has the USER role";
             }
             case FAIL_BAD_EMAIL -> {
                 httpStatus = HttpStatus.EXPECTATION_FAILED;
                 message = "Email format is invalid.";
+                registerMessage = "Registration attempt failed; the regex rejected the entered email";
             }
             case FAIL_BAD_MATCH -> {
                 httpStatus = HttpStatus.EXPECTATION_FAILED;
                 message = "Passwords do not match.";
+                registerMessage = "Registration attempt failed; password and matching fields do not mathc";
             }
             case FAIL_BAD_PASSWORD -> {
                 httpStatus = HttpStatus.EXPECTATION_FAILED;
                 message = "Password must be at least 8 characters long and must contain 1 letter, 1 digit, and 1 special character.";
+                registerMessage = "Registration attempt failed; the regex rejected the entered password";
             }
             case FAIL_EMAIL_EXISTS -> {
                 httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
                 message = "Email already exists.";
+                registerMessage = "Registration attempt failed; the entered email already exists in the database";
             }
         }
 
         /* return appropriate Response */
+        final String finalRegisterMessage = registerMessage;
         return new CustomResponse(
                 responseType,
                 httpStatus,
@@ -63,6 +71,7 @@ public class RegistrationController {
                 new HashMap<>() {{
                     put("registrationStatus", registrationStatus);
                     put("registrationEmail", registration.getEmail());
+                    put("registrationMessage", finalRegisterMessage);
                 }}
         );
     }
