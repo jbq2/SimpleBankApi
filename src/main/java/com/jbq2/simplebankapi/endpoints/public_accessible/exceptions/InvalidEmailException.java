@@ -1,6 +1,6 @@
-package com.jbq2.simplebankapi.endpoints.public_accessible.login.exceptions;
+package com.jbq2.simplebankapi.endpoints.public_accessible.exceptions;
 
-public class InvalidEmailException extends CustomLoginException {
+public class InvalidEmailException extends ValidationException {
 
     public InvalidEmailException(String msg){
         super(msg);
