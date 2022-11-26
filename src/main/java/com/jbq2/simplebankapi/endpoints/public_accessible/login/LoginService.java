@@ -34,7 +34,7 @@ public class LoginService {
         pattern = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$");
         matcher = pattern.matcher(login.getPassword());
         if (!matcher.find()){
-            throw new InvalidPasswordException("Password does not meet requirements (At least 8 characters, no spaces, and contains at least 1 letter, 1 digit, and 1 special character)");
+            throw new InvalidPasswordException("Password does not meet requirements (At least 8 characters, no spaces, and contains at least 1 letter, 1 digit, and 1 special character).");
         }
 
         /* fetching user using loadUserByUsername */
@@ -49,7 +49,7 @@ public class LoginService {
         /* checking if passwords match */
         /* must user encoder to properly match */
         if(!encoder.matches(login.getPassword(), userDetails.getPassword())){
-            throw new IncorrectPasswordException("Entered password was incorrect");
+            throw new IncorrectPasswordException("Incorrect Password.");
         }
 
         return userDetails;
