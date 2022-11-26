@@ -1,9 +1,10 @@
-package com.jbq2.simplebankapi.endpoints.public_accessible.login;
+package com.jbq2.simplebankapi.endpoints.public_accessible.login.PENDING_DEPRECATION;
 
 import com.jbq2.simplebankapi.endpoints.public_accessible.exceptions.EmailNotFoundException;
 import com.jbq2.simplebankapi.endpoints.public_accessible.exceptions.IncorrectPasswordException;
 import com.jbq2.simplebankapi.endpoints.public_accessible.exceptions.InvalidEmailException;
 import com.jbq2.simplebankapi.endpoints.public_accessible.exceptions.InvalidPasswordException;
+import com.jbq2.simplebankapi.endpoints.public_accessible.login.Login;
 import com.jbq2.simplebankapi.user_packages.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,4 +1,4 @@
-package com.jbq2.simplebankapi.session_management.PENDING;
+package com.jbq2.simplebankapi.session_management.PENDING_DEPRECATION;
 
 import com.jbq2.simplebankapi.response.CustomResponse;
 import com.jbq2.simplebankapi.response.ResponseType;

@@ -1,4 +1,4 @@
-package com.jbq2.simplebankapi.endpoints.public_accessible.registration;
+package com.jbq2.simplebankapi.endpoints.public_accessible.registration.PENDING_DEPRECATION;
 
 /* describes registration success/errors */
 public enum RegistrationStatus {

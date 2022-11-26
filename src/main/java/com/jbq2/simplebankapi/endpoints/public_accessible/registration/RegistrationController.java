@@ -21,7 +21,7 @@ public class RegistrationController {
     public CustomResponse register(@RequestBody Registration registration){
         /* initializing some params of RegistrationResponse */
         ResponseType responseType = ResponseType.SUCCESS;
-        HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        HttpStatus httpStatus;
         String message = "";
         String registrationEmail = null;
         RuntimeException exception = null;
@@ -32,21 +32,16 @@ public class RegistrationController {
             httpStatus = HttpStatus.OK;
             message = "SUCCESS";
         }
-        catch(ValidationException e){
+        catch(RuntimeException e){
             exception = e;
             responseType = ResponseType.ERROR;
             httpStatus = HttpStatus.EXPECTATION_FAILED;
             message = e.getMessage();
         }
-        catch(CustomRegistrationException e){
-            exception = e;
-            responseType = ResponseType.ERROR;
-            message = e.getMessage();
-        }
 
         /* return appropriate Response */
         final String finalRegistrationEmail = registrationEmail;
-        RuntimeException finalException = exception;
+        final RuntimeException finalException = exception;
         return new CustomResponse(
                 responseType,
                 httpStatus,

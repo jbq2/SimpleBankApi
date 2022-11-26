@@ -1,4 +1,4 @@
-package com.jbq2.simplebankapi.session_management.PENDING;
+package com.jbq2.simplebankapi.session_management.PENDING_DEPRECATION;
 
 import com.jbq2.simplebankapi.session_management.exceptions.UserSessionNotFoundException;
 import com.jbq2.simplebankapi.user_packages.service.UserService;

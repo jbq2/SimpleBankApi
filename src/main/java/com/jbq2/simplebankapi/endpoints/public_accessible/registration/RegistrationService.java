@@ -32,7 +32,7 @@ public class RegistrationService {
         Pattern pattern = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
         Matcher matcher = pattern.matcher(registration.getEmail());
         if(!matcher.find()){
-            throw new InvalidEmailException("Email is incorrectly formatted.");
+            throw new RuntimeException("Email is incorrectly formatted.");
         }
         user.setEmail(registration.getEmail());
 
@@ -40,10 +40,10 @@ public class RegistrationService {
         pattern = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$");
         matcher = pattern.matcher(registration.getPassword());
         if(!matcher.find()){
-            throw new InvalidPasswordException("Password does not meet requirements (At least 8 characters, no spaces, and contains at least 1 letter, 1 digit, and 1 special character).");
+            throw new RuntimeException("Password does not meet requirements (At least 8 characters, no spaces, and contains at least 1 letter, 1 digit, and 1 special character).");
         }
         if(!registration.getPassword().equals(registration.getMatching())){
-            throw new NonMatchingPasswordsException("Password confirmation does not match the password.");
+            throw new RuntimeException("Password confirmation does not match the password.");
         }
         /* encode password before saving to db */
         user.setPassword(encoder.encode(registration.getPassword()));
@@ -51,14 +51,14 @@ public class RegistrationService {
         /* DataAccessException if email UNIQUE constraint is violated */
         user = userService.saveUser(user);
         if(user == null){
-            throw new EmailAlreadyExistsException("Email already exists.");
+            throw new RuntimeException("Email already exists.");
         }
 
         /* saves user_role, throws error if non unique */
         userRole.setUser_id(user.getId());
         userRole.setRole_id(RoleEnum.USER.getValue());
         if(userRoleService.saveUserRole(userRole) == null){
-            throw new UserAlreadyHasRoleException("User-role combination already exists.");
+            throw new RuntimeException("User-role combination already exists.");
         }
         return registration.getEmail();
     }
