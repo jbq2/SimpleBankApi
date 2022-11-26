@@ -1,4 +1,4 @@
-package com.jbq2.simplebankapi.session_management.PENDING_DEPRECATION.exceptions;
+package com.jbq2.simplebankapi.session_management.PENDING_DELETION.exceptions;
 
 import lombok.NoArgsConstructor;
 

@@ -1,4 +1,4 @@
-package com.jbq2.simplebankapi.endpoints.public_accessible.login.PENDING_DEPRECATION;
+package com.jbq2.simplebankapi.endpoints.public_accessible.login.PENDING_DELETION;
 
 public enum LoginStatus {
     SUCCESS,

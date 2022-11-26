@@ -1,8 +1,8 @@
-package com.jbq2.simplebankapi.session_management.PENDING_DEPRECATION;
+package com.jbq2.simplebankapi.session_management.PENDING_DELETION;
 
 import com.jbq2.simplebankapi.response.CustomResponse;
 import com.jbq2.simplebankapi.response.ResponseType;
-import com.jbq2.simplebankapi.session_management.PENDING_DEPRECATION.exceptions.UserSessionNotFoundException;
+import com.jbq2.simplebankapi.session_management.PENDING_DELETION.exceptions.UserSessionNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
