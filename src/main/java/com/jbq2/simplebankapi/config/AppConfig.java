@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 @EnableWebSecurity
 @AllArgsConstructor
 public class AppConfig {
-    private final  UserService userService;
+    private final UserService userService;
     private final SessionFilter sessionFilter;
     private final BCryptPasswordEncoder passwordEncoder;
 

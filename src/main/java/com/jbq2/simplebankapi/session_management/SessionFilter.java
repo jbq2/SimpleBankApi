@@ -1,6 +1,5 @@
 package com.jbq2.simplebankapi.session_management;
 
-import com.jbq2.simplebankapi.user_packages.pojo.User;
 import com.jbq2.simplebankapi.user_packages.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
