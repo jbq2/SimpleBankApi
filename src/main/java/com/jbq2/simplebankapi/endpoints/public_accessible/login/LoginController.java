@@ -4,7 +4,7 @@ import com.jbq2.simplebankapi.endpoints.public_accessible.exceptions.CustomLogin
 import com.jbq2.simplebankapi.endpoints.public_accessible.exceptions.ValidationException;
 import com.jbq2.simplebankapi.response.CustomResponse;
 import com.jbq2.simplebankapi.response.ResponseType;
-import com.jbq2.simplebankapi.session_management.UserSessionService;
+import com.jbq2.simplebankapi.session_management.PENDING.UserSessionService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
