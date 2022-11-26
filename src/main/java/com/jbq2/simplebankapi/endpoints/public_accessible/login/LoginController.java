@@ -20,10 +20,10 @@ public class LoginController {
 
     @PostMapping("/login")
     @ResponseBody
-    public CustomResponse loginUser(@RequestBody Login login) {
-        manager.authenticate(new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword()));
+    public CustomResponse loginUser(@RequestBody LoginForm loginForm) {
+        manager.authenticate(new UsernamePasswordAuthenticationToken(loginForm.getEmail(), loginForm.getPassword()));
 
-        final String sessionId = sessionRegistry.registerSession(login.getEmail());
+        final String sessionId = sessionRegistry.registerSession(loginForm.getEmail());
 
         return new CustomResponse(
                 ResponseType.SUCCESS,

@@ -1,7 +1,5 @@
 package com.jbq2.simplebankapi.endpoints.public_accessible.registration;
 
-import com.jbq2.simplebankapi.endpoints.public_accessible.exceptions.CustomRegistrationException;
-import com.jbq2.simplebankapi.endpoints.public_accessible.exceptions.ValidationException;
 import com.jbq2.simplebankapi.response.CustomResponse;
 import com.jbq2.simplebankapi.response.ResponseType;
 import lombok.AllArgsConstructor;
@@ -18,7 +16,7 @@ public class RegistrationController {
 
     @PostMapping("/register")
     @ResponseBody
-    public CustomResponse register(@RequestBody Registration registration){
+    public CustomResponse register(@RequestBody RegistrationForm registrationForm){
         /* initializing some params of RegistrationResponse */
         ResponseType responseType = ResponseType.SUCCESS;
         HttpStatus httpStatus;
@@ -28,7 +26,7 @@ public class RegistrationController {
 
         try{
             /* validateAndSave() will throw an exception and will be handled in the catch clauses */
-            registrationEmail = registrationService.validateAndSave(registration);
+            registrationEmail = registrationService.validateAndSave(registrationForm);
             httpStatus = HttpStatus.OK;
             message = "SUCCESS";
         }
