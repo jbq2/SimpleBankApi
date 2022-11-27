@@ -14,6 +14,15 @@ public class SessionService {
     }
 
     public String getEmailOfSession(String sessionId){
+        if(sessionId == null){
+            return null;
+        }
+
+        Session session = sessionDao.getSessionBySessionId(sessionId);
+        if(session == null){
+            return null;
+        }
+
         String email = sessionDao.getSessionBySessionId(sessionId).getEmail();
         touchSession(sessionId);
         return email;

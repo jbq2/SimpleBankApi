@@ -1,6 +1,8 @@
 package com.jbq2.simplebankapi.session_management;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -52,7 +54,12 @@ public class SessionDao {
         String sql = "SELECT * FROM sessions " +
                 "WHERE session_id = ?";
 
-        return jdbcTemplate.queryForObject(sql, sessionRowMapper, sessionId);
+        try{
+            return jdbcTemplate.queryForObject(sql, sessionRowMapper, sessionId);
+        }
+        catch(EmptyResultDataAccessException e){
+            return null;
+        }
     }
 
     private String generateSessionId(){

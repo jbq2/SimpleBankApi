@@ -1,4 +1,4 @@
-package com.jbq2.simplebankapi.session_management;
+package com.jbq2.simplebankapi.session_management.PENDING_DELETION;
 
 import org.springframework.stereotype.Component;
 
