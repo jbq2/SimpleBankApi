@@ -25,7 +25,7 @@ public class LoginController {
         final String sessionId = sessionService.registerSession(loginForm.getEmail());
         return ResponseEntity.ok(
                 new HashMap<>() {{
-                    put("sessionId", sessionId);
+                    put("SESSION_ID", sessionId);
                 }}
         );
     }

@@ -19,7 +19,7 @@ public class RegistrationController {
         final String registrationEmail = registrationService.validateAndSave(registrationForm);
         return ResponseEntity.ok(
                 new HashMap<>() {{
-                    put("email", registrationEmail);
+                    put("EMAIL", registrationEmail);
                 }}
         );
     }
