@@ -5,11 +5,13 @@ import com.jbq2.simplebankapi.response.ResponseType;
 import com.jbq2.simplebankapi.session_management.SessionService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -22,17 +24,12 @@ public class LoginController {
 
     @PostMapping("/login")
     @ResponseBody
-    public CustomResponse loginUser(@RequestBody LoginForm loginForm) {
+    public ResponseEntity<Map<String, ?>> loginUser(@RequestBody LoginForm loginForm) {
         manager.authenticate(new UsernamePasswordAuthenticationToken(loginForm.getEmail(), loginForm.getPassword()));
 
         /* final String sessionId = sessionRegistry.registerSession(loginForm.getEmail()); */
         final String sessionId = sessionService.registerSession(loginForm.getEmail());
-
-        return new CustomResponse(
-                ResponseType.SUCCESS,
-                HttpStatus.OK,
-                HttpStatus.OK.value(),
-                "SUCCESS",
+        return ResponseEntity.ok(
                 new HashMap<>() {{
                     put("sessionId", sessionId);
                 }}

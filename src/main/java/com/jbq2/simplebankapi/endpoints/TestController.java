@@ -11,7 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/api/v1")
 public class TestController {
-
     @GetMapping("/list")
     public List<String> list(){
         return List.of("you", "are", "authenticated");
