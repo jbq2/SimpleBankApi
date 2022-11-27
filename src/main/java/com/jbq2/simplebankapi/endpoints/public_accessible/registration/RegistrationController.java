@@ -1,9 +1,5 @@
 package com.jbq2.simplebankapi.endpoints.public_accessible.registration;
-
-import com.jbq2.simplebankapi.response.CustomResponse;
-import com.jbq2.simplebankapi.response.ResponseType;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
