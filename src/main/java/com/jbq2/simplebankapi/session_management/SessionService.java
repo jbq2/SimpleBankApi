@@ -14,14 +14,16 @@ public class SessionService {
     }
 
     public String getEmailOfSession(String sessionId){
-        return sessionDao.getSessionBySessionId(sessionId).getEmail();
-    }
-
-    public void touchSession(String sessionId){
-        sessionDao.touchSession(sessionId);
+        String email = sessionDao.getSessionBySessionId(sessionId).getEmail();
+        touchSession(sessionId);
+        return email;
     }
 
     public void deleteSession(String sessionId){
         sessionDao.deleteSession(sessionId);
+    }
+
+    private void touchSession(String sessionId){
+        sessionDao.touchSession(sessionId);
     }
 }

@@ -20,7 +20,8 @@ import java.io.IOException;
 @AllArgsConstructor
 public class SessionFilter extends OncePerRequestFilter {
 
-    private final InMemorySessionRegistry sessionRegistry;
+    /* private final InMemorySessionRegistry sessionRegistry; */
+    private final SessionService sessionService;
     private final UserService userService;
 
     @Override
@@ -31,7 +32,8 @@ public class SessionFilter extends OncePerRequestFilter {
             return;
         }
 
-        final String email = sessionRegistry.getEmailForSession(sessionId);
+        /* final String email = sessionRegistry.getEmailForSession(sessionId); */
+        final String email = sessionService.getEmailOfSession(sessionId);
         if(email == null){
             filterChain.doFilter(request, response);
             return;

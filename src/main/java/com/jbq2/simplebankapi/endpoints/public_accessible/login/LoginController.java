@@ -2,7 +2,7 @@ package com.jbq2.simplebankapi.endpoints.public_accessible.login;
 
 import com.jbq2.simplebankapi.response.CustomResponse;
 import com.jbq2.simplebankapi.response.ResponseType;
-import com.jbq2.simplebankapi.session_management.InMemorySessionRegistry;
+import com.jbq2.simplebankapi.session_management.SessionService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,14 +16,17 @@ import java.util.HashMap;
 @RequestMapping("/api/v1")
 public class LoginController {
     public AuthenticationManager manager;
-    public InMemorySessionRegistry sessionRegistry;
+    /* public InMemorySessionRegistry sessionRegistry; */
+
+    public SessionService sessionService;
 
     @PostMapping("/login")
     @ResponseBody
     public CustomResponse loginUser(@RequestBody LoginForm loginForm) {
         manager.authenticate(new UsernamePasswordAuthenticationToken(loginForm.getEmail(), loginForm.getPassword()));
 
-        final String sessionId = sessionRegistry.registerSession(loginForm.getEmail());
+        /* final String sessionId = sessionRegistry.registerSession(loginForm.getEmail()); */
+        final String sessionId = sessionService.registerSession(loginForm.getEmail());
 
         return new CustomResponse(
                 ResponseType.SUCCESS,
