@@ -1,6 +1,6 @@
 package com.jbq2.simplebankapi.user_packages.dao;
 
-import com.jbq2.simplebankapi.user_packages.interfaces.DataObjectAccessable;
+import com.jbq2.simplebankapi.user_packages.interfaces.DataObjectAccessableById;
 import com.jbq2.simplebankapi.user_packages.pojo.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -14,7 +14,7 @@ import java.util.List;
 /* data access object for User */
 @Component
 @Repository
-public class RoleDao implements DataObjectAccessable<Role> {
+public class RoleDao implements DataObjectAccessableById<Role> {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
