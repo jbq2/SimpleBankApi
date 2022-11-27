@@ -1,6 +1,6 @@
 package com.jbq2.simplebankapi.user_packages.pojo;
 
-import com.jbq2.simplebankapi.user_packages.interfaces.Queryable;
+import com.jbq2.simplebankapi.user_packages.interfaces.QueryableById;
 import com.jbq2.simplebankapi.user_packages.dao.UserRoleDao;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,7 +16,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode
 @NoArgsConstructor
-public class User implements Queryable, UserDetails {
+public class User implements QueryableById, UserDetails {
     private Long id;
     private String email;
     private String password;

@@ -2,7 +2,7 @@ package com.jbq2.simplebankapi.user_packages.interfaces;
 
 import java.util.List;
 
-public interface DataObjectAccessable<T extends Queryable> {
+public interface DataObjectAccessableById<T extends QueryableById> {
     List<T> findAll();
     T findById(Long id);
     T save(T queryable);
