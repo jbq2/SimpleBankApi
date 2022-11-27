@@ -20,7 +20,6 @@ import java.io.IOException;
 @AllArgsConstructor
 public class SessionFilter extends OncePerRequestFilter {
 
-    /* private final InMemorySessionRegistry sessionRegistry; */
     private final SessionService sessionService;
     private final UserService userService;
 

@@ -15,8 +15,6 @@ import java.util.Map;
 @RequestMapping("/api/v1")
 public class LoginController {
     public AuthenticationManager manager;
-    /* public InMemorySessionRegistry sessionRegistry; */
-
     public SessionService sessionService;
 
     @PostMapping("/login")
@@ -24,7 +22,6 @@ public class LoginController {
     public ResponseEntity<Map<String, ?>> loginUser(@RequestBody LoginForm loginForm) {
         manager.authenticate(new UsernamePasswordAuthenticationToken(loginForm.getEmail(), loginForm.getPassword()));
 
-        /* final String sessionId = sessionRegistry.registerSession(loginForm.getEmail()); */
         final String sessionId = sessionService.registerSession(loginForm.getEmail());
         return ResponseEntity.ok(
                 new HashMap<>() {{
