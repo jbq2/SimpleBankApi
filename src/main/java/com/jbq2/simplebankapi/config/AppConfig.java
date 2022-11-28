@@ -38,7 +38,7 @@ public class AppConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors().and().csrf().disable()
+                .csrf().disable()
 
                 /* for dev purposes, requests to /api/v1/test will not be checked for authorization */
                 .authorizeRequests().antMatchers("/api/v1/register", "/api/v1/login").permitAll()

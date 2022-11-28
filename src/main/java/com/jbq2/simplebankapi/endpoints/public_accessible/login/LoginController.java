@@ -2,6 +2,7 @@ package com.jbq2.simplebankapi.endpoints.public_accessible.login;
 
 import com.jbq2.simplebankapi.session_management.SessionService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,14 +20,15 @@ public class LoginController {
 
     @PostMapping("/login")
     @ResponseBody
-    public ResponseEntity<Map<String, ?>> loginUser(@RequestBody LoginForm loginForm) {
+    public ResponseEntity<?> loginUser(@RequestBody LoginForm loginForm) {
         manager.authenticate(new UsernamePasswordAuthenticationToken(loginForm.getEmail(), loginForm.getPassword()));
 
         final String sessionId = sessionService.registerSession(loginForm.getEmail());
-        return ResponseEntity.ok(
-                new HashMap<>() {{
+        return new ResponseEntity<>(
+                new HashMap<String, String>() {{
                     put("SESSION_ID", sessionId);
-                }}
+                }},
+                HttpStatus.OK
         );
     }
 }

@@ -1,5 +1,6 @@
 package com.jbq2.simplebankapi.endpoints.public_accessible.registration;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,13 +15,14 @@ public class RegistrationController {
 
     @PostMapping("/register")
     @ResponseBody
-    public ResponseEntity<Map<String, ?>> register(@RequestBody RegistrationForm registrationForm){
+    public ResponseEntity<?> register(@RequestBody RegistrationForm registrationForm){
 
         final String registrationEmail = registrationService.validateAndSave(registrationForm);
-        return ResponseEntity.ok(
-                new HashMap<>() {{
+        return new ResponseEntity<>(
+                new HashMap<String, String>() {{
                     put("EMAIL", registrationEmail);
-                }}
+                }},
+                HttpStatus.OK
         );
     }
 }
