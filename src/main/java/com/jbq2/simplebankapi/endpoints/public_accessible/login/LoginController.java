@@ -23,12 +23,18 @@ public class LoginController {
     public ResponseEntity<?> loginUser(@RequestBody LoginForm loginForm) {
         manager.authenticate(new UsernamePasswordAuthenticationToken(loginForm.getEmail(), loginForm.getPassword()));
 
-        final String sessionId = sessionService.registerSession(loginForm.getEmail());
-        return new ResponseEntity<>(
-                new HashMap<String, String>() {{
-                    put("SESSION_ID", sessionId);
-                }},
-                HttpStatus.OK
-        );
+        try{
+            final String sessionId = sessionService.registerSession(loginForm.getEmail());
+            return new ResponseEntity<>(
+                    new LoginDto(sessionId, "Successfully logged in!"),
+                    HttpStatus.OK
+            );
+        }
+        catch(RuntimeException e){
+            return new ResponseEntity<>(
+                    "There is already an existing session.",
+                    HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
     }
 }

@@ -17,12 +17,18 @@ public class RegistrationController {
     @ResponseBody
     public ResponseEntity<?> register(@RequestBody RegistrationForm registrationForm){
 
-        final String registrationEmail = registrationService.validateAndSave(registrationForm);
-        return new ResponseEntity<>(
-                new HashMap<String, String>() {{
-                    put("EMAIL", registrationEmail);
-                }},
-                HttpStatus.OK
-        );
+        try{
+            final String registrationEmail = registrationService.validateAndSave(registrationForm);
+            return new ResponseEntity<>(
+                    new RegistrationDto(registrationEmail, "Successfully registered!"),
+                    HttpStatus.OK
+            );
+        }
+        catch(RuntimeException e){
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
     }
 }
