@@ -1,7 +1,7 @@
-package com.jbq2.simplebankapi.userpackage.dao;
+package com.jbq2.simplebankapi.user_packages.dao;
 
-import com.jbq2.simplebankapi.interfaces.DataObjectAccessable;
-import com.jbq2.simplebankapi.userpackage.pojo.Role;
+import com.jbq2.simplebankapi.user_packages.interfaces.DataObjectAccessableById;
+import com.jbq2.simplebankapi.user_packages.pojo.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,10 +11,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/* data access object for User */
 @Component
 @Repository
-/* data access object for Role */
-public class RoleDao implements DataObjectAccessable<Role> {
+public class RoleDao implements DataObjectAccessableById<Role> {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -53,14 +53,11 @@ public class RoleDao implements DataObjectAccessable<Role> {
 
     @Override
     public Role save(Role role) {
-        String sql = "INSERT INTO roles (id, name, created, updated) " +
-                "VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO roles (name) " +
+                "VALUES (?)";
         try{
             jdbcTemplate.update(sql,
-                    role.getId(),
-                    role.getName(),
-                    role.getCreated(),
-                    role.getUpdated());
+                    role.getName());
             return role;
         }
         catch(DataAccessException e){

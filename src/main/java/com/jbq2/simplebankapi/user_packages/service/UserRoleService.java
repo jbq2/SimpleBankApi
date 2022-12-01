@@ -1,9 +1,8 @@
-package com.jbq2.simplebankapi.userpackage.service;
+package com.jbq2.simplebankapi.user_packages.service;
 
-import com.jbq2.simplebankapi.userpackage.dao.UserRoleDao;
-import com.jbq2.simplebankapi.userpackage.pojo.Role;
-import com.jbq2.simplebankapi.userpackage.pojo.RoleEnum;
-import com.jbq2.simplebankapi.userpackage.pojo.UserRole;
+import com.jbq2.simplebankapi.user_packages.dao.UserRoleDao;
+import com.jbq2.simplebankapi.user_packages.pojo.RoleEnum;
+import com.jbq2.simplebankapi.user_packages.pojo.UserRole;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

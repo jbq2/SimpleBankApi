@@ -1,7 +1,7 @@
-package com.jbq2.simplebankapi.userpackage.dao;
+package com.jbq2.simplebankapi.user_packages.dao;
 
-import com.jbq2.simplebankapi.interfaces.DataObjectAccessable;
-import com.jbq2.simplebankapi.userpackage.pojo.User;
+import com.jbq2.simplebankapi.user_packages.interfaces.DataObjectAccessableById;
+import com.jbq2.simplebankapi.user_packages.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -12,10 +12,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/* data access object for User */
 @Component
 @Repository
-/* data access object for User */
-public class UserDao implements DataObjectAccessable<User> {
+public class UserDao implements DataObjectAccessableById<User> {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -66,16 +66,13 @@ public class UserDao implements DataObjectAccessable<User> {
 
     @Override
     public User save(User user) {
-        String sql = "INSERT INTO USERS (id, email, password, created, updated) " +
-                "VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO USERS (email, password) " +
+                "VALUES (?, ?)";
 
         try{
             jdbcTemplate.update(sql,
-                    user.getId(),
                     user.getEmail(),
-                    user.getPassword(),
-                    user.getCreated(),
-                    user.getUpdated());
+                    user.getPassword());
             user = findByEmail(user.getEmail());
             return user;
         }

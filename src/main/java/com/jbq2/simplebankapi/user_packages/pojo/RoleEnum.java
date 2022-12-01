@@ -1,4 +1,4 @@
-package com.jbq2.simplebankapi.userpackage.pojo;
+package com.jbq2.simplebankapi.user_packages.pojo;
 
 import org.springframework.security.core.GrantedAuthority;
 
