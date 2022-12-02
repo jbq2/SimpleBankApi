@@ -1,11 +1,14 @@
 package com.jbq2.simplebankapi.endpoints.public_accessible.login;
 
 import com.jbq2.simplebankapi.session_management.SessionService;
+import com.jbq2.simplebankapi.user_packages.pojo.User;
+import com.jbq2.simplebankapi.user_packages.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -17,6 +20,7 @@ import java.util.Map;
 public class LoginController {
     public AuthenticationManager manager;
     public SessionService sessionService;
+    private UserService userService;
 
     @PostMapping("/login")
     @ResponseBody
@@ -25,8 +29,9 @@ public class LoginController {
 
         try{
             final String sessionId = sessionService.registerSession(loginForm.getEmail());
+            UserDetails userDetails = userService.loadUserByUsername(loginForm.getEmail());
             return new ResponseEntity<>(
-                    new LoginDto(sessionId, "Successfully logged in!"),
+                    new LoginDto(sessionId, userDetails.getAuthorities(), "Successfully logged in!"),
                     HttpStatus.OK
             );
         }
