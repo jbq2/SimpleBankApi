@@ -2,10 +2,15 @@ package com.jbq2.simplebankapi.endpoints.public_accessible.login;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class LoginDto {
+public class LoginResponse {
+    /*
+    * login response will contain the user's session id, authorities, and a developer message
+    * */
     private String session_id;
+    private List<String> authorities;
     private String message;
 }
