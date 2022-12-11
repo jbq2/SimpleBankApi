@@ -63,6 +63,12 @@ public class LoginController {
 
     @GetMapping("/verify")
     public ResponseEntity<?> isLoggedIn(@RequestHeader String sessionId) throws JsonProcessingException {
+        /*
+        * verifies if a user is logged in
+        * always returns a 200 OK
+        * if an error is thrown by touchSession (because of no session existing), then return false in response
+        * otherwise, return true (because session exists for user)
+        * */
         System.out.println(sessionId);
         ObjectMapper objectMapper = new ObjectMapper();
         try{
