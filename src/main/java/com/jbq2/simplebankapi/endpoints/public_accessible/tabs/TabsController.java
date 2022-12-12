@@ -50,12 +50,14 @@ public class TabsController {
         }
         HashMap<String, String> tabMap = new HashMap<>();
         if(authorities.contains("ADMIN")) {
+            tabMap.put("Dashboard", "#");
             tabMap.put("Accounts", "#");
             tabMap.put("Profile", "#");
             tabMap.put("Admin", "#");
             tabMap.put("Sign Out", "#");
         }
         else if(authorities.contains("USER")) {
+            tabMap.put("Dashboard", "#");
             tabMap.put("Accounts", "#");
             tabMap.put("Profile", "#");
             tabMap.put("Sign Out", "#");

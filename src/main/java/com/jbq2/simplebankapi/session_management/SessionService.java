@@ -21,9 +21,14 @@ public class SessionService {
         if(session == null){
             return null;
         }
-        String email = sessionDao.getSessionBySessionId(sessionId).getEmail();
-        touchSession(sessionId);
-        return email;
+        try{
+            String email = sessionDao.getSessionBySessionId(sessionId).getEmail();
+            touchSession(sessionId);
+            return email;
+        }
+        catch(RuntimeException e){
+            return null;
+        }
     }
 
     public void deleteSession(String sessionId){

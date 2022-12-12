@@ -44,7 +44,7 @@ public class LoginController {
                 authorities.add(auth.getAuthority());
             }
             return new ResponseEntity<>(
-                    new LoginResponse(sessionId, authorities, "Successfully logged in!"),
+                    new LoginResponse(sessionId,  userDetails.getUsername(), authorities, "Successfully logged in!"),
                     HttpStatus.OK
             );
         }
@@ -69,7 +69,6 @@ public class LoginController {
         * if an error is thrown by touchSession (because of no session existing), then return false in response
         * otherwise, return true (because session exists for user)
         * */
-        System.out.println(sessionId);
         ObjectMapper objectMapper = new ObjectMapper();
         try{
             sessionService.touchSession(sessionId);
