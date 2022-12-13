@@ -43,7 +43,8 @@ public class AppConfig {
                         "/api/v1/register",
                         "/api/v1/login",
                         "/api/v1/verify",
-                        "/api/v1/tabs").permitAll()
+                        "/api/v1/tabs",
+                        "/api/v1/signout").permitAll()
                 .anyRequest().authenticated().and()
                 .addFilterBefore(sessionFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().authenticationEntryPoint(
