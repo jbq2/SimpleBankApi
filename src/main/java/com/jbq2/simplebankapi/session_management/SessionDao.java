@@ -39,7 +39,10 @@ public class SessionDao {
                 "SET last_activity = CURRENT_TIMESTAMP " +
                 "WHERE session_id = ?";
 
-        jdbcTemplate.update(sql, sessionId);
+        int rowsUpdated = jdbcTemplate.update(sql, sessionId);
+        if(rowsUpdated == 0) {
+            throw new RuntimeException("There is no such session with id " + sessionId);
+        }
     }
 
     public void deleteSession(String sessionId){

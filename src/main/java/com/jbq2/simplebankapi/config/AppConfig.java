@@ -39,14 +39,14 @@ public class AppConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-
-                /* for dev purposes, requests to /api/v1/test will not be checked for authorization */
-                .authorizeRequests().antMatchers("/api/v1/register", "/api/v1/login").permitAll()
-
+                .authorizeRequests().antMatchers(
+                        "/api/v1/register",
+                        "/api/v1/login",
+                        "/api/v1/verify",
+                        "/api/v1/tabs",
+                        "/api/v1/signout").permitAll()
                 .anyRequest().authenticated().and()
-
                 .addFilterBefore(sessionFilter, UsernamePasswordAuthenticationFilter.class)
-
                 .exceptionHandling().authenticationEntryPoint(
                         ((request, response, exception) -> {
                             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, exception.getMessage());
