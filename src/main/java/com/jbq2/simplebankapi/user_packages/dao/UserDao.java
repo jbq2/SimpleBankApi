@@ -81,7 +81,8 @@ public class UserDao implements DataObjectAccessableById<User> {
         }
     }
 
-    public User update(User user, String email) {
+    @Override
+    public User updateWithId(User user) {
         String sql = "UPDATE USERS " +
                 "SET email = ?, password = ? " +
                 "WHERE id = ?";
@@ -95,6 +96,19 @@ public class UserDao implements DataObjectAccessableById<User> {
         }
         catch(DataAccessException e){
             return null;
+        }
+    }
+
+    public boolean updateWithEmail(User user) {
+        String sql = "UPDATE USERS " +
+                "SET password = ? " +
+                "WHERE email = ?";
+        try {
+            int rowsAffected = jdbcTemplate.update(sql, user.getPassword(), user.getEmail());
+            return rowsAffected != 0;
+        }
+        catch(RuntimeException e) {
+            return false;
         }
     }
 

@@ -97,7 +97,7 @@ public class UserRoleDao implements DataObjectAccessableById<UserRole> {
     }
 
     @Override
-    public UserRole update(UserRole userRole) {
+    public UserRole updateWithId(UserRole userRole) {
         String sql = "UPDATE user_role " +
                 "SET user_id = ?, role_id =? " +
                 "WHERE id = ?";
