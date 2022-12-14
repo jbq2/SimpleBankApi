@@ -6,6 +6,5 @@ public interface DataObjectAccessableById<T extends QueryableById> {
     List<T> findAll();
     T findById(Long id);
     T save(T queryable);
-    T update(T queryable);
     Boolean delete(Long id);
 }

@@ -54,8 +54,8 @@ public class UserService implements UserDetailsService {
     }
 
     /* updates user info */
-    public User updateUser(User user){
-        return userDao.update(user);
+    public User updateUser(User user, String email){
+        return userDao.update(user, email);
     }
 
     /* deletes user */
