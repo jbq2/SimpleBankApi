@@ -81,8 +81,7 @@ public class UserDao implements DataObjectAccessableById<User> {
         }
     }
 
-    @Override
-    public User update(User user) {
+    public User update(User user, String email) {
         String sql = "UPDATE USERS " +
                 "SET email = ?, password = ? " +
                 "WHERE id = ?";
