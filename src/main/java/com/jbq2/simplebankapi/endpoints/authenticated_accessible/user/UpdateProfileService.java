@@ -3,8 +3,6 @@ package com.jbq2.simplebankapi.endpoints.authenticated_accessible.user;
 import com.jbq2.simplebankapi.user_packages.pojo.User;
 import com.jbq2.simplebankapi.user_packages.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.dao.DataAccessException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +14,7 @@ import java.util.regex.Pattern;
 public class UpdateProfileService {
     private UserService userService;
 
-    public UpdateProfileResponse updateProfile(UpdateProfileForm updateProfileForm) {
+    public String updateProfile(UpdateProfileForm updateProfileForm) {
         if(!updateProfileForm.getPassword().equals(updateProfileForm.getMatching())){
             throw new RuntimeException("Non-matching passwords");
         }
@@ -30,7 +28,7 @@ public class UpdateProfileService {
         user.setEmail(updateProfileForm.getEmail());
         user.setPassword(encoder.encode(updateProfileForm.getPassword()));
         if(userService.updateUserByEmail(user)) {
-            return new UpdateProfileResponse(user.getEmail(), "Password updated");
+            return user.getEmail();
         }
         else {
             throw new RuntimeException("DB_ERR");
