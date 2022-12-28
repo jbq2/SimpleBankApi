@@ -1,5 +1,7 @@
 package com.jbq2.simplebankapi.endpoints.public_accessible.login;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jbq2.simplebankapi.session_management.SessionService;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 
@@ -43,8 +46,14 @@ public class LoginController {
             for(GrantedAuthority auth : grantedAuthoritiesCollection){
                 authorities.add(auth.getAuthority());
             }
+            Algorithm algorithm = Algorithm.HMAC256("secret");
+            String jwt = JWT.create()
+                    .withSubject(userDetails.getUsername())
+                    .withArrayClaim("authorities", authorities.toArray(new String[0]))
+                    .withExpiresAt(new Date(System.currentTimeMillis() + 300_000))
+                    .sign(algorithm);
             return new ResponseEntity<>(
-                    new LoginResponse(sessionId,  userDetails.getUsername(), authorities, "Successfully logged in!"),
+                    new LoginResponse(jwt, "Successfully logged in!"),
                     HttpStatus.OK
             );
         }
