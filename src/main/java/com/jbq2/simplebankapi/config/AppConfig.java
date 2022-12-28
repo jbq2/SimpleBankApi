@@ -39,13 +39,17 @@ public class AppConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .authorizeRequests().antMatchers(
+                .authorizeRequests()
+                .antMatchers(
                         "/api/v1/register",
                         "/api/v1/login",
                         "/api/v1/verify",
                         "/api/v1/tabs",
                         "/api/v1/signout").permitAll()
-                .anyRequest().authenticated().and()
+                .antMatchers("/api/v1/users/**").hasAuthority("USER")
+                .antMatchers("/api/v1/admin/**").hasAuthority("ADMIN")
+                .anyRequest().authenticated()
+                .and()
                 .addFilterBefore(sessionFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().authenticationEntryPoint(
                         ((request, response, exception) -> {

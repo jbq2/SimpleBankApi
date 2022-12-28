@@ -17,20 +17,24 @@ import java.lang.runtime.ObjectMethods;
 @RequestMapping("/api/v1/user")
 public class UpdateProfileController {
     private UpdateProfileService updateProfileService;
+    private ObjectMapper mapper;
 
     @PostMapping("/update")
     public ResponseEntity<?> updateProfile(@RequestBody UpdateProfileForm updateProfileForm) throws JsonProcessingException {
         try{
-            UpdateProfileResponse updateProfileResponse = updateProfileService.updateProfile(updateProfileForm);
-            return new ResponseEntity<>(updateProfileResponse, HttpStatus.OK);
+            String email = updateProfileService.updateProfile(updateProfileForm);
+            return new ResponseEntity<>(new UpdateProfileResponse(
+                    email,
+                    "Password updated"
+            ), HttpStatus.OK);
         }
         catch(RuntimeException e) {
-            ObjectMapper objectMapper = new ObjectMapper();
             if(e.getMessage().equals("DB_ERR")) {
-                return new ResponseEntity<>(objectMapper.writeValueAsString("Unable to save updates to database"), HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<>(mapper.writeValueAsString("Unable to save updates to database"), HttpStatus.INTERNAL_SERVER_ERROR);
             }
-            else{   
-                return new ResponseEntity<>(objectMapper.writeValueAsString(e.getMessage()), HttpStatus.EXPECTATION_FAILED);
+
+            else{
+                return new ResponseEntity<>(mapper.writeValueAsString(e.getMessage()), HttpStatus.EXPECTATION_FAILED);
             }
         }
     }
