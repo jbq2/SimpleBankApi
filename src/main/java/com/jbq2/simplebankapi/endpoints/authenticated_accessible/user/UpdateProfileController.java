@@ -29,7 +29,7 @@ public class UpdateProfileController {
             if(e.getMessage().equals("DB_ERR")) {
                 return new ResponseEntity<>(objectMapper.writeValueAsString("Unable to save updates to database"), HttpStatus.INTERNAL_SERVER_ERROR);
             }
-            else{
+            else{   
                 return new ResponseEntity<>(objectMapper.writeValueAsString(e.getMessage()), HttpStatus.EXPECTATION_FAILED);
             }
         }
