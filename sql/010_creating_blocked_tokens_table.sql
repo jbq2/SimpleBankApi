@@ -1,0 +1,6 @@
+USE simplebankapidb;
+
+CREATE TABLE BLOCKED_TOKENS (
+	`id` INT PRIMARY KEY AUTO_INCREMENT,
+    `token` TEXT(7000) NOT NULL
+);
