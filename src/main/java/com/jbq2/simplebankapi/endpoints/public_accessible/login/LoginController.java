@@ -2,6 +2,8 @@ package com.jbq2.simplebankapi.endpoints.public_accessible.login;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.Claim;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jbq2.simplebankapi.session_management.SessionService;
@@ -16,10 +18,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 @RestController
@@ -30,6 +29,7 @@ public class LoginController {
     public SessionService sessionService;
     public ExpiredTokenService expiredTokenService;
     private UserService userService;
+
 
     @PostMapping("/login")
     @ResponseBody
@@ -74,9 +74,8 @@ public class LoginController {
         }
     }
 
-
     @GetMapping("/verify")
-    public ResponseEntity<?> isLoggedIn(@RequestHeader String sessionId) throws JsonProcessingException {
+    public ResponseEntity<?> isLoggedIn(@RequestHeader String jwt) throws JsonProcessingException {
         /*
         * verifies if a user is logged in
         * always returns a 200 OK
@@ -84,12 +83,18 @@ public class LoginController {
         * otherwise, return true (because session exists for user)
         * */
         ObjectMapper objectMapper = new ObjectMapper();
-        try{
-            sessionService.touchSession(sessionId);
-            return new ResponseEntity<>(objectMapper.writeValueAsString(true), HttpStatus.OK);
+        DecodedJWT decodedJwt = JWT.decode(jwt);
+        if(!decodedJwt.getExpiresAt().before(new Date())) {
+            Algorithm algorithm = Algorithm.HMAC256("secret");
+            String newJwt = JWT.create()
+                    .withSubject(decodedJwt.getSubject())
+                    .withArrayClaim("authorities", decodedJwt.getClaims().keySet().toArray(new String[0]))
+                    .withExpiresAt(new Date(System.currentTimeMillis() + 300_000))
+                    .sign(algorithm);
+            return new ResponseEntity<>(objectMapper.writeValueAsString(newJwt), HttpStatus.OK);
         }
-        catch(RuntimeException e){
-            return new ResponseEntity<>(objectMapper.writeValueAsString(false), HttpStatus.OK);
+        else{
+            return new ResponseEntity<>(objectMapper.writeValueAsString("JWT expired"), HttpStatus.UNAUTHORIZED);
         }
     }
 }
