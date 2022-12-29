@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jbq2.simplebankapi.session_management.SessionService;
+import com.jbq2.simplebankapi.token_management.ExpiredTokenService;
 import com.jbq2.simplebankapi.user_packages.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,7 @@ import java.util.List;
 public class LoginController {
     public AuthenticationManager manager;
     public SessionService sessionService;
+    public ExpiredTokenService expiredTokenService;
     private UserService userService;
 
     @PostMapping("/login")
@@ -52,6 +54,9 @@ public class LoginController {
                     .withArrayClaim("authorities", authorities.toArray(new String[0]))
                     .withExpiresAt(new Date(System.currentTimeMillis() + 300_000))
                     .sign(algorithm);
+            if(expiredTokenService.exists(jwt)) {
+                expiredTokenService.pop(jwt);
+            }
             return new ResponseEntity<>(
                     new LoginResponse(jwt, "Successfully logged in!"),
                     HttpStatus.OK
