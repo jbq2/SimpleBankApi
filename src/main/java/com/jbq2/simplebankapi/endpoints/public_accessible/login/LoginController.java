@@ -83,18 +83,24 @@ public class LoginController {
         * otherwise, return true (because session exists for user)
         * */
         ObjectMapper objectMapper = new ObjectMapper();
-        DecodedJWT decodedJwt = JWT.decode(jwt);
-        if(!decodedJwt.getExpiresAt().before(new Date())) {
+        try{
             Algorithm algorithm = Algorithm.HMAC256("secret");
-            String newJwt = JWT.create()
-                    .withSubject(decodedJwt.getSubject())
-                    .withArrayClaim("authorities", decodedJwt.getClaims().keySet().toArray(new String[0]))
-                    .withExpiresAt(new Date(System.currentTimeMillis() + 300_000))
-                    .sign(algorithm);
-            return new ResponseEntity<>(objectMapper.writeValueAsString(newJwt), HttpStatus.OK);
+            JWT.require(algorithm).build().verify(jwt);
+            DecodedJWT decodedJwt = JWT.decode(jwt);
+            if(!decodedJwt.getExpiresAt().before(new Date())) {
+                String newJwt = JWT.create()
+                        .withSubject(decodedJwt.getSubject())
+                        .withArrayClaim("authorities", decodedJwt.getClaims().keySet().toArray(new String[0]))
+                        .withExpiresAt(new Date(System.currentTimeMillis() + 300_000))
+                        .sign(algorithm);
+                return new ResponseEntity<>(objectMapper.writeValueAsString(newJwt), HttpStatus.OK);
+            }
+            else{
+                return new ResponseEntity<>(objectMapper.writeValueAsString("expired JWT"), HttpStatus.UNAUTHORIZED);
+            }
         }
-        else{
-            return new ResponseEntity<>(objectMapper.writeValueAsString("JWT expired"), HttpStatus.UNAUTHORIZED);
+        catch(RuntimeException e) {
+            return new ResponseEntity<>(objectMapper.writeValueAsString("invalid JWT"), HttpStatus.UNAUTHORIZED);
         }
     }
 }

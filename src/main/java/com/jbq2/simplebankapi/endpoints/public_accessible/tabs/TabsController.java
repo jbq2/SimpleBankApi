@@ -1,5 +1,7 @@
 package com.jbq2.simplebankapi.endpoints.public_accessible.tabs;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.jbq2.simplebankapi.session_management.SessionService;
 import com.jbq2.simplebankapi.user_packages.service.UserService;
 import lombok.AllArgsConstructor;
@@ -22,15 +24,13 @@ public class TabsController {
     * if the user is not logged in, Login and Register tabs are returned
     * if user IS logged in, tabs are set accordingly based on their authorities (ADMIN or USER)
     * */
-    private SessionService sessionService;
     private UserService userService;
 
     @GetMapping("/tabs")
-    public ResponseEntity<?> getTabs(@RequestHeader String sessionId){
-        String email = sessionService.getEmailOfSession(sessionId);
-        if (email == null) {
+    public ResponseEntity<?> getTabs(@RequestHeader String jwt){
+        if (jwt == null) {
             /*
-            * email is null if there exists no email tied to the passed sessionId
+            * email is null if there exists no email tied to the passed jwt
             * if this is the case, then default the tabs to Register and Login and return
             * */
             return new ResponseEntity<>(new HashMap<>(){{
@@ -38,6 +38,8 @@ public class TabsController {
                 put("Login", "#");
             }}, HttpStatus.UNAUTHORIZED);
         }
+        DecodedJWT decodedJWT = JWT.decode(jwt);
+        String email = decodedJWT.getSubject();;
         /*
         * get the authorities of the user
         * if ADMIN, tabs = {Accounts, Profile, Admin, Sign Out}
