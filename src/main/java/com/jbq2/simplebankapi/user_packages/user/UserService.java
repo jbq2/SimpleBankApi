@@ -1,8 +1,6 @@
-package com.jbq2.simplebankapi.user_packages.service;
+package com.jbq2.simplebankapi.user_packages.user;
 
-import com.jbq2.simplebankapi.user_packages.dao.UserDao;
-import com.jbq2.simplebankapi.user_packages.dao.UserRoleDao;
-import com.jbq2.simplebankapi.user_packages.pojo.User;
+import com.jbq2.simplebankapi.user_packages.user_role.UserRoleDao;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

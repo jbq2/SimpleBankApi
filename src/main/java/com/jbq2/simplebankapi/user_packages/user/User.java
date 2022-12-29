@@ -1,11 +1,10 @@
-package com.jbq2.simplebankapi.user_packages.pojo;
+package com.jbq2.simplebankapi.user_packages.user;
 
 import com.jbq2.simplebankapi.user_packages.interfaces.QueryableById;
-import com.jbq2.simplebankapi.user_packages.dao.UserRoleDao;
+import com.jbq2.simplebankapi.user_packages.user_role.UserRoleDao;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

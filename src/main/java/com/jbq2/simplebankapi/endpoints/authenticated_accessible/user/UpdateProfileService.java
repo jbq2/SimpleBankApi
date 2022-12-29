@@ -1,7 +1,7 @@
 package com.jbq2.simplebankapi.endpoints.authenticated_accessible.user;
 
-import com.jbq2.simplebankapi.user_packages.pojo.User;
-import com.jbq2.simplebankapi.user_packages.service.UserService;
+import com.jbq2.simplebankapi.user_packages.user.User;
+import com.jbq2.simplebankapi.user_packages.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

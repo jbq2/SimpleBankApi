@@ -2,13 +2,12 @@ package com.jbq2.simplebankapi.endpoints.public_accessible.login;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.Claim;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jbq2.simplebankapi.helpers.FunctionsService;
 import com.jbq2.simplebankapi.session_management.SessionService;
 import com.jbq2.simplebankapi.token_management.ExpiredTokenService;
-import com.jbq2.simplebankapi.user_packages.service.UserService;
+import com.jbq2.simplebankapi.user_packages.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,9 +25,9 @@ import java.util.*;
 @RequestMapping("/api/v1")
 public class LoginController {
     public AuthenticationManager manager;
-    public SessionService sessionService;
     public ExpiredTokenService expiredTokenService;
     private UserService userService;
+    private FunctionsService functions;
 
 
     @PostMapping("/login")
@@ -41,7 +40,6 @@ public class LoginController {
             * get the user details to gather the authorities--put authorities in a list of string
             * this will be returned if all goes well
             * */
-            final String sessionId = sessionService.registerSession(loginForm.getEmail());
             UserDetails userDetails = userService.loadUserByUsername(loginForm.getEmail());
             Collection<? extends GrantedAuthority> grantedAuthoritiesCollection = userDetails.getAuthorities();
             List<String> authorities = new ArrayList<>();
@@ -83,23 +81,10 @@ public class LoginController {
         * otherwise, return true (because session exists for user)
         * */
         ObjectMapper objectMapper = new ObjectMapper();
-        try{
-            Algorithm algorithm = Algorithm.HMAC256("secret");
-            JWT.require(algorithm).build().verify(jwt);
-            DecodedJWT decodedJwt = JWT.decode(jwt);
-            if(!decodedJwt.getExpiresAt().before(new Date())) {
-                String newJwt = JWT.create()
-                        .withSubject(decodedJwt.getSubject())
-                        .withArrayClaim("authorities", decodedJwt.getClaims().keySet().toArray(new String[0]))
-                        .withExpiresAt(new Date(System.currentTimeMillis() + 300_000))
-                        .sign(algorithm);
-                return new ResponseEntity<>(objectMapper.writeValueAsString(newJwt), HttpStatus.OK);
-            }
-            else{
-                return new ResponseEntity<>(objectMapper.writeValueAsString("expired JWT"), HttpStatus.UNAUTHORIZED);
-            }
+        if(functions.isActiveJwt(jwt)) {
+            return new ResponseEntity<>(objectMapper.writeValueAsString(functions.updateJwt(jwt)), HttpStatus.OK);
         }
-        catch(RuntimeException e) {
+        else {
             return new ResponseEntity<>(objectMapper.writeValueAsString("invalid JWT"), HttpStatus.UNAUTHORIZED);
         }
     }

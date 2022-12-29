@@ -1,6 +1,6 @@
 package com.jbq2.simplebankapi.session_management;
 
-import com.jbq2.simplebankapi.user_packages.service.UserService;
+import com.jbq2.simplebankapi.user_packages.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
