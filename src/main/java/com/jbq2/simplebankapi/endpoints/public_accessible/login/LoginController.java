@@ -5,7 +5,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jbq2.simplebankapi.helpers.FunctionsService;
-import com.jbq2.simplebankapi.session_management.SessionService;
 import com.jbq2.simplebankapi.token_management.ExpiredTokenService;
 import com.jbq2.simplebankapi.user_packages.user.UserService;
 import lombok.AllArgsConstructor;
@@ -69,23 +68,6 @@ public class LoginController {
                     "There is already an existing session.",
                     HttpStatus.INTERNAL_SERVER_ERROR
             );
-        }
-    }
-
-    @GetMapping("/verify")
-    public ResponseEntity<?> isLoggedIn(@RequestHeader String jwt) throws JsonProcessingException {
-        /*
-        * verifies if a user is logged in
-        * always returns a 200 OK
-        * if an error is thrown by touchSession (because of no session existing), then return false in response
-        * otherwise, return true (because session exists for user)
-        * */
-        ObjectMapper objectMapper = new ObjectMapper();
-        if(functions.isActiveJwt(jwt)) {
-            return new ResponseEntity<>(objectMapper.writeValueAsString(functions.updateJwt(jwt)), HttpStatus.OK);
-        }
-        else {
-            return new ResponseEntity<>(objectMapper.writeValueAsString("invalid JWT"), HttpStatus.UNAUTHORIZED);
         }
     }
 }

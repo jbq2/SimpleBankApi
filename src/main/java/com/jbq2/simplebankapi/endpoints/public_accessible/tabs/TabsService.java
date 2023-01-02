@@ -22,7 +22,7 @@ public class TabsService {
 
     public Map<String, String> getTabs(String jwt) {
         Map<String, String> map = new HashMap<>();
-        if (!functions.isActiveJwt(jwt)) {
+        if (!functions.isLoggedIn(jwt)) {
             /*
              * email is null if there exists no email tied to the passed jwt
              * if this is the case, then default the tabs to Register and Login and return
