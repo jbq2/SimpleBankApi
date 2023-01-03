@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class IsLoggedInResponse {
-    private boolean isLoggedIn;
+    private boolean loggedIn;
     private String updatedJwt;
 }

@@ -46,7 +46,7 @@ public class AppConfig {
                         "/api/v1/verify",
                         "/api/v1/tabs",
                         "/api/v1/signout",
-                        "/api/v1/functions").permitAll()
+                        "/api/v1/functions/**").permitAll()
                 .antMatchers("/api/v1/users/**").hasAuthority("USER")
                 .antMatchers("/api/v1/admin/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
