@@ -19,9 +19,9 @@ public class SignOutController {
     private ExpiredTokenService expiredTokenService;
 
     @GetMapping("/signout")
-    public ResponseEntity<?> signOut(@RequestHeader String expToken) throws JsonProcessingException {
+    public ResponseEntity<?> signOut(@RequestHeader String jwt) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        if(expiredTokenService.add(expToken) == null) {
+        if(expiredTokenService.add(jwt) == null) {
             return new ResponseEntity<>(mapper.writeValueAsString(true), HttpStatus.OK);
         }
         else{

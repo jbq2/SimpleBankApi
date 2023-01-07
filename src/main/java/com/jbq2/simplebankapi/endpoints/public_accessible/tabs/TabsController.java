@@ -29,7 +29,7 @@ public class TabsController {
 
     @GetMapping("/tabs")
     public ResponseEntity<?> getTabs(@RequestHeader String jwt) {
-        Map<String, String> tabMap = tabsService.getTabs(jwt);
-        return new ResponseEntity<>(tabMap, HttpStatus.OK);
+        List<Tab> tabs = tabsService.getTabs(jwt);
+        return new ResponseEntity<>(tabs, HttpStatus.OK);
     }
 }

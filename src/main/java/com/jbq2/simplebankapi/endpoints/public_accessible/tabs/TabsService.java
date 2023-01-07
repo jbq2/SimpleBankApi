@@ -20,43 +20,53 @@ public class TabsService {
     private FunctionsService functions;
     private ExpiredTokenService expiredTokenService;
 
-    public Map<String, String> getTabs(String jwt) {
+    public List<Tab> getTabs(String jwt) {
+        List<Tab> tabs = new ArrayList<>();
         Map<String, String> map = new HashMap<>();
         if (!functions.isLoggedIn(jwt)) {
             /*
              * email is null if there exists no email tied to the passed jwt
              * if this is the case, then default the tabs to Register and Login and return
              * */
-            map.put("Register", "/register");
-            map.put("Login", "/login");
+            tabs.add(new Tab("Login", "/login"));
+            tabs.add(new Tab("Register", "/register"));
         }
         else{
             String oldJwt = jwt;
             jwt = functions.updateJwt(jwt);
             DecodedJWT decodedJWT = JWT.decode(jwt);
             String email = decodedJWT.getSubject();
-            Collection<? extends GrantedAuthority> grantedAuthoritiesCollection = userService.loadUserByUsername(email).getAuthorities();
-            List<String> authorities = new ArrayList<>();
-            for(GrantedAuthority auth : grantedAuthoritiesCollection){
-                authorities.add(auth.getAuthority());
+            Collection<? extends GrantedAuthority> authorities = userService.loadUserByUsername(email).getAuthorities();
+
+            boolean isAdmin = false;
+            boolean isUser = false;
+            for(GrantedAuthority auth : authorities) {
+                if(auth.getAuthority().equals("ADMIN")) {
+                    isAdmin = true;
+                }
+                if(auth.getAuthority().equals("USER")) {
+                    isUser = true;
+                }
             }
-            if(authorities.contains("ADMIN")) {
-                map.put("Dashboard", "/user/dashboard");
-                map.put("Accounts", "/user/accounts");
-                map.put("Profile", "/user/profile");
-                map.put("Admin", "#");
-                map.put("Logout", "#");
+
+            if(isAdmin) {
+                tabs.add(new Tab("Dashboard", "/dashboard"));
+                tabs.add(new Tab("Accounts", "/accounts"));
+                tabs.add(new Tab("Profile", "/profile"));
+                tabs.add(new Tab("Admin", "#"));
+                tabs.add(new Tab("Logout", "#"));
             }
-            else if(authorities.contains("USER")) {
-                map.put("Dashboard", "/user/dashboard");
-                map.put("Accounts", "/user/accounts");
-                map.put("Profile", "/user/profile");
-                map.put("Logout", "#");
+            if(isUser && !isAdmin) {
+                tabs.add(new Tab("Dashboard", "/dashboard"));
+                tabs.add(new Tab("Accounts", "/accounts"));
+                tabs.add(new Tab("Profile", "/profile"));
+                tabs.add(new Tab("Logout", "#"));
             }
+
             if(expiredTokenService.add(oldJwt) == null) {
                 throw new RuntimeException();
             }
         }
-        return map;
+        return tabs;
     }
 }
