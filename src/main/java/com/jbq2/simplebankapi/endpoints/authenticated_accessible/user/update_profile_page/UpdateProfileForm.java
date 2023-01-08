@@ -1,4 +1,4 @@
-package com.jbq2.simplebankapi.endpoints.authenticated_accessible.user;
+package com.jbq2.simplebankapi.endpoints.authenticated_accessible.user.update_profile_page;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

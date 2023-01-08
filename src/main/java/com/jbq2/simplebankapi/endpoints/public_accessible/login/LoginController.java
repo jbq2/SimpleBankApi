@@ -26,8 +26,6 @@ public class LoginController {
     public AuthenticationManager manager;
     public ExpiredTokenService expiredTokenService;
     private UserService userService;
-    private FunctionsService functions;
-
 
     @PostMapping("/login")
     @ResponseBody

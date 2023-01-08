@@ -1,4 +1,4 @@
-package com.jbq2.simplebankapi.endpoints.authenticated_accessible.user;
+package com.jbq2.simplebankapi.endpoints.authenticated_accessible.user.update_profile_page;
 
 import com.jbq2.simplebankapi.user_packages.user.User;
 import com.jbq2.simplebankapi.user_packages.user.UserService;

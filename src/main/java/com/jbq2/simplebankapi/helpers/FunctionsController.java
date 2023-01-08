@@ -13,7 +13,7 @@ public class FunctionsController {
     private FunctionsService functionsService;
 
     @PostMapping("/isLoggedIn")
-    public ResponseEntity<?> isLoggedIn(@RequestBody String jwt) {
+    public ResponseEntity<?> isLoggedIn(@RequestHeader String jwt) {
         if(functionsService.isLoggedIn(jwt)) {
             return new ResponseEntity<>(new IsLoggedInResponse(true, functionsService.updateJwt(jwt)), HttpStatus.OK);
         }
