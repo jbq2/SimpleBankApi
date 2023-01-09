@@ -1,10 +1,10 @@
 package com.jbq2.simplebankapi.endpoints.public_accessible.registration;
 
-import com.jbq2.simplebankapi.user_packages.pojo.RoleEnum;
-import com.jbq2.simplebankapi.user_packages.pojo.User;
-import com.jbq2.simplebankapi.user_packages.pojo.UserRole;
-import com.jbq2.simplebankapi.user_packages.service.UserRoleService;
-import com.jbq2.simplebankapi.user_packages.service.UserService;
+import com.jbq2.simplebankapi.user_packages.role.RoleEnum;
+import com.jbq2.simplebankapi.user_packages.user.User;
+import com.jbq2.simplebankapi.user_packages.user_role.UserRole;
+import com.jbq2.simplebankapi.user_packages.user_role.UserRoleService;
+import com.jbq2.simplebankapi.user_packages.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,11 +16,9 @@ import java.util.regex.Pattern;
 @AllArgsConstructor
 public class RegistrationService {
 
-    /* userpackage objects needed */
     private final UserService userService;
     private final UserRoleService userRoleService;
 
-    /* Pattern and Matcher objects for regex validation */
 
     public String validateAndSave(RegistrationForm registrationForm){
         User user = new User();

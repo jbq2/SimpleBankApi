@@ -1,7 +1,6 @@
-package com.jbq2.simplebankapi.user_packages.dao;
+package com.jbq2.simplebankapi.user_packages.user_role;
 
 import com.jbq2.simplebankapi.user_packages.interfaces.DataObjectAccessableById;
-import com.jbq2.simplebankapi.user_packages.pojo.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;

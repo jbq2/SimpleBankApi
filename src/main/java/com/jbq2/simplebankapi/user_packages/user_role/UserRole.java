@@ -1,4 +1,4 @@
-package com.jbq2.simplebankapi.user_packages.pojo;
+package com.jbq2.simplebankapi.user_packages.user_role;
 
 import com.jbq2.simplebankapi.user_packages.interfaces.QueryableById;
 import lombok.Data;

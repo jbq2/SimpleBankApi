@@ -2,8 +2,9 @@ package com.jbq2.simplebankapi.endpoints.public_accessible.signout;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jbq2.simplebankapi.session_management.SessionService;
+import com.jbq2.simplebankapi.token_management.ExpiredTokenService;
 import lombok.AllArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,12 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 public class SignOutController {
-    private SessionService sessionService;
+    private ExpiredTokenService expiredTokenService;
 
     @GetMapping("/signout")
-    public ResponseEntity<?> signOut(@RequestHeader String sessionId) throws JsonProcessingException {
-        sessionService.deleteSession(sessionId);
-        ObjectMapper objectMapper = new ObjectMapper();
-        return new ResponseEntity<>(objectMapper.writeValueAsString("session ID " + sessionId + " invalidated"), HttpStatus.OK);
+    public ResponseEntity<?> signOut(@RequestHeader String jwt) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        if(expiredTokenService.add(jwt) == null) {
+            return new ResponseEntity<>(mapper.writeValueAsString(true), HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(mapper.writeValueAsString(false), HttpStatus.OK);
+        }
     }
 }
