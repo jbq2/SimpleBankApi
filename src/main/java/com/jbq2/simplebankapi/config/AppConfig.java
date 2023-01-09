@@ -1,6 +1,5 @@
 package com.jbq2.simplebankapi.config;
 
-import com.jbq2.simplebankapi.session_management.SessionFilter;
 import com.jbq2.simplebankapi.token_management.JwtAuthenticationFilter;
 import com.jbq2.simplebankapi.user_packages.user.UserService;
 import lombok.AllArgsConstructor;
