@@ -19,9 +19,10 @@ public class FunctionsService {
     public String updateJwt(String jwt) {
         Algorithm algorithm = Algorithm.HMAC256("secret");
         DecodedJWT decodedJwt = JWT.decode(jwt);
+        String[] authorities = decodedJwt.getClaim("authorities").asArray(String.class);
         return JWT.create()
                 .withSubject(decodedJwt.getSubject())
-                .withArrayClaim("authorities", decodedJwt.getClaims().keySet().toArray(new String[0]))
+                .withArrayClaim("authorities", authorities)
                 .withExpiresAt(new Date(System.currentTimeMillis() + 300_000))
                 .sign(algorithm);
     }

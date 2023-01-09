@@ -2,9 +2,6 @@ package com.jbq2.simplebankapi.endpoints.public_accessible.login;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jbq2.simplebankapi.helpers.FunctionsService;
 import com.jbq2.simplebankapi.token_management.ExpiredTokenService;
 import com.jbq2.simplebankapi.user_packages.user.UserService;
 import lombok.AllArgsConstructor;

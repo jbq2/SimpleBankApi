@@ -1,6 +1,7 @@
 package com.jbq2.simplebankapi.config;
 
 import com.jbq2.simplebankapi.session_management.SessionFilter;
+import com.jbq2.simplebankapi.token_management.JwtAuthenticationFilter;
 import com.jbq2.simplebankapi.user_packages.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -27,7 +29,8 @@ import javax.servlet.http.HttpServletResponse;
 @AllArgsConstructor
 public class AppConfig {
     private final UserService userService;
-    private final SessionFilter sessionFilter;
+//    private final SessionFilter sessionFilter;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
@@ -38,25 +41,15 @@ public class AppConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers(
-                        "/api/v1/register",
-                        "/api/v1/login",
-                        "/api/v1/verify",
-                        "/api/v1/tabs",
-                        "/api/v1/signout",
-                        "/api/v1/functions/**").permitAll()
-                .antMatchers("/api/v1/users/**").hasAuthority("USER")
+                .csrf().disable().authorizeRequests()
                 .antMatchers("/api/v1/admin/**").hasAuthority("ADMIN")
-                .anyRequest().authenticated()
+                .antMatchers("/api/v1/user/**").hasAnyAuthority("USER", "ADMIN")
+                .anyRequest().permitAll()
                 .and()
-                .addFilterBefore(sessionFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().authenticationEntryPoint(
-                        ((request, response, exception) -> {
-                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, exception.getMessage());
-                        })
-                );
+                        ((request, response, exception) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED, exception.getMessage()))
+                ).and().cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
         return http.build();
     }
 

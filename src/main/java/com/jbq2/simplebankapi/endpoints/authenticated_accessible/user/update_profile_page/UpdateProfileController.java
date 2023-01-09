@@ -3,6 +3,7 @@ package com.jbq2.simplebankapi.endpoints.authenticated_accessible.user.update_pr
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,9 @@ public class UpdateProfileController {
 
     @GetMapping("/content")
     public ResponseEntity<?> getPageContent(@RequestHeader String jwt) throws JsonProcessingException {
-        return new ResponseEntity<>(mapper.writeValueAsString("you entered a login protected page!"), HttpStatus.OK);
+        return ResponseEntity.ok()
+                .header("Access-Control-Allow-Origin", "http://localhost:4200")
+                .body(mapper.writeValueAsString("you entered a login protected page! Here is the jwt you used: " + jwt));
     }
 
     @PostMapping("/update")
