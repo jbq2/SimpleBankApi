@@ -17,9 +17,9 @@ public class UpdateProfileController {
 
     @GetMapping("/content")
     public ResponseEntity<?> getPageContent(@RequestHeader String jwt) throws JsonProcessingException {
+        String subject = updateProfileService.getPageContent(jwt);
         return ResponseEntity.ok()
-                .header("Access-Control-Allow-Origin", "http://localhost:4200")
-                .body(mapper.writeValueAsString("you entered a login protected page! Here is the jwt you used: " + jwt));
+                .body(mapper.writeValueAsString(subject));
     }
 
     @PostMapping("/update")
@@ -35,7 +35,6 @@ public class UpdateProfileController {
             if(e.getMessage().equals("DB_ERR")) {
                 return new ResponseEntity<>(mapper.writeValueAsString("Unable to save updates to database"), HttpStatus.INTERNAL_SERVER_ERROR);
             }
-
             else{
                 return new ResponseEntity<>(mapper.writeValueAsString(e.getMessage()), HttpStatus.EXPECTATION_FAILED);
             }

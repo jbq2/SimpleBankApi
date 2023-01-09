@@ -1,5 +1,8 @@
 package com.jbq2.simplebankapi.endpoints.authenticated_accessible.user.update_profile_page;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.jbq2.simplebankapi.user_packages.user.User;
 import com.jbq2.simplebankapi.user_packages.user.UserService;
 import lombok.AllArgsConstructor;
@@ -13,6 +16,16 @@ import java.util.regex.Pattern;
 @AllArgsConstructor
 public class UpdateProfileService {
     private UserService userService;
+
+    public String getPageContent(String jwt) {
+        try {
+            DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256("secret")).build().verify(jwt);
+            return decodedJWT.getSubject();
+        }
+        catch(Exception e) {
+            throw new RuntimeException("invalid jwt");
+        }
+    }
 
     public String updateProfile(UpdateProfileForm updateProfileForm) {
         if(!updateProfileForm.getPassword().equals(updateProfileForm.getMatching())){

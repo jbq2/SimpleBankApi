@@ -44,7 +44,7 @@ public class LoginController {
             String jwt = JWT.create()
                     .withSubject(userDetails.getUsername())
                     .withArrayClaim("authorities", authorities.toArray(new String[0]))
-                    .withExpiresAt(new Date(System.currentTimeMillis() + 300_000))
+                    .withExpiresAt(new Date(System.currentTimeMillis() + 600_000))
                     .sign(algorithm);
             if(expiredTokenService.exists(jwt)) {
                 expiredTokenService.pop(jwt);

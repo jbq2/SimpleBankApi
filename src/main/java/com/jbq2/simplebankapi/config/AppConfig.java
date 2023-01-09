@@ -28,7 +28,6 @@ import javax.servlet.http.HttpServletResponse;
 @AllArgsConstructor
 public class AppConfig {
     private final UserService userService;
-//    private final SessionFilter sessionFilter;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final BCryptPasswordEncoder passwordEncoder;
 
@@ -48,7 +47,8 @@ public class AppConfig {
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().authenticationEntryPoint(
                         ((request, response, exception) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED, exception.getMessage()))
-                ).and().cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
+                ).and()
+                .cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
         return http.build();
     }
 

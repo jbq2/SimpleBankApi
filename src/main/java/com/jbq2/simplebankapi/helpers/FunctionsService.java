@@ -23,7 +23,7 @@ public class FunctionsService {
         return JWT.create()
                 .withSubject(decodedJwt.getSubject())
                 .withArrayClaim("authorities", authorities)
-                .withExpiresAt(new Date(System.currentTimeMillis() + 300_000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 600_000))
                 .sign(algorithm);
     }
 
