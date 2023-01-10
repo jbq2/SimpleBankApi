@@ -6,8 +6,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jbq2.simplebankapi.helpers.FunctionsService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -27,16 +30,11 @@ public class UpdateProfileController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<?> updateProfile(@RequestBody UpdateProfileForm updateProfileForm) throws JsonProcessingException {
-        try{
+    @ResponseBody
+    public ResponseEntity<?> updateProfile(@RequestBody UpdateProfileForm updateProfileForm) {
+        try {
             updateProfileService.updateProfile(updateProfileForm);
             DecodedJWT decodedJWT = JWT.decode(updateProfileForm.getJwt());
-//            Algorithm algorithm = Algorithm.HMAC256("secret");
-//            String newJwt = JWT.create()
-//                    .withSubject(updateProfileForm.getEmail())
-//                    .withArrayClaim("authorities", decodedJWT.getClaim("authorities").asArray(String.class))
-//                    .withExpiresAt(new Date(System.currentTimeMillis() + 600_000))
-//                    .sign(algorithm);
             String newJwt = functions.createUserJwt(updateProfileForm.getEmail(), decodedJWT.getClaim("authorities").asArray(String.class), new Date(System.currentTimeMillis() + 600_000));
             return new ResponseEntity<>(new UpdateProfileResponse(updateProfileForm.getEmail(), "Successfully updated profile.", newJwt), HttpStatus.OK);
         }
@@ -44,5 +42,11 @@ public class UpdateProfileController {
             String newJwt = functions.updateUserJwtExpiry(updateProfileForm.getJwt());
             return new ResponseEntity<>(new UpdateProfileResponse(updateProfileForm.getOldEmail(), e.getMessage(), newJwt), HttpStatus.EXPECTATION_FAILED);
         }
+    }
+
+    @ResponseBody
+    @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
+    public String handleHttpMediaTypeNotAcceptableException() {
+        return "acceptable MIME type:" + MediaType.APPLICATION_JSON_VALUE;
     }
 }

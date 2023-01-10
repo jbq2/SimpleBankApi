@@ -7,6 +7,7 @@ import com.jbq2.simplebankapi.token_management.ExpiredTokenService;
 import com.jbq2.simplebankapi.user_packages.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,7 +27,7 @@ public class LoginController {
     private UserService userService;
     private FunctionsService functions;
 
-    @PostMapping("/login")
+    @PostMapping(value="/login", consumes= MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<?> loginUser(@RequestBody LoginForm loginForm) {
         manager.authenticate(new UsernamePasswordAuthenticationToken(loginForm.getEmail(), loginForm.getPassword()));
@@ -42,12 +43,6 @@ public class LoginController {
             for(GrantedAuthority auth : grantedAuthoritiesCollection){
                 authorities.add(auth.getAuthority());
             }
-//            Algorithm algorithm = Algorithm.HMAC256("secret");
-//            String jwt = JWT.create()
-//                    .withSubject(userDetails.getUsername())
-//                    .withArrayClaim("authorities", authorities.toArray(new String[0]))
-//                    .withExpiresAt(new Date(System.currentTimeMillis() + 600_000))
-//                    .sign(algorithm);
             String jwt = functions.createUserJwt(userDetails.getUsername(), authorities.toArray(new String[0]), new Date(System.currentTimeMillis() + 600_000));
             if(expiredTokenService.exists(jwt)) {
                 expiredTokenService.pop(jwt);
