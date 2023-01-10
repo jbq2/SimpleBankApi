@@ -98,17 +98,13 @@ public class UserDao implements DataObjectAccessableById<User> {
         }
     }
 
-    public boolean updateWithEmail(User user) {
+    public User updateWithEmail(User user) {
         String sql = "UPDATE USERS " +
-                "SET password = ? " +
+                "SET email = ?, password = ? " +
                 "WHERE email = ?";
-        try {
-            int rowsAffected = jdbcTemplate.update(sql, user.getPassword(), user.getEmail());
-            return rowsAffected != 0;
-        }
-        catch(RuntimeException e) {
-            return false;
-        }
+
+        jdbcTemplate.update(sql, user.getEmail(), user.getPassword(), user.getEmail());
+        return user;
     }
 
     @Override

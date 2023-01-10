@@ -56,7 +56,7 @@ public class UserService implements UserDetailsService {
         return userDao.updateWithId(user);
     }
 
-    public boolean updateUserByEmail(User user) {
+    public User updateUserByEmail(User user) {
         return userDao.updateWithEmail(user);
     }
 

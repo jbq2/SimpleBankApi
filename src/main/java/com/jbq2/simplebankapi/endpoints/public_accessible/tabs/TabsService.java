@@ -6,8 +6,6 @@ import com.jbq2.simplebankapi.helpers.FunctionsService;
 import com.jbq2.simplebankapi.token_management.ExpiredTokenService;
 import com.jbq2.simplebankapi.user_packages.user.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +31,7 @@ public class TabsService {
         }
         else{
             String oldJwt = jwt;
-            jwt = functions.updateJwt(jwt);
+            jwt = functions.updateUserJwtExpiry(jwt);
             DecodedJWT decodedJWT = JWT.decode(jwt);
             String email = decodedJWT.getSubject();
             Collection<? extends GrantedAuthority> authorities = userService.loadUserByUsername(email).getAuthorities();

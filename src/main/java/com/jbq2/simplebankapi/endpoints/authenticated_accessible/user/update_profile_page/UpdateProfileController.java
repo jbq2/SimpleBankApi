@@ -1,12 +1,16 @@
 package com.jbq2.simplebankapi.endpoints.authenticated_accessible.user.update_profile_page;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jbq2.simplebankapi.helpers.FunctionsService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 @RestController
 @AllArgsConstructor
@@ -14,30 +18,31 @@ import org.springframework.web.bind.annotation.*;
 public class UpdateProfileController {
     private UpdateProfileService updateProfileService;
     private ObjectMapper mapper;
+    private FunctionsService functions;
 
     @GetMapping("/content")
     public ResponseEntity<?> getPageContent(@RequestHeader String jwt) throws JsonProcessingException {
         String subject = updateProfileService.getPageContent(jwt);
-        return ResponseEntity.ok()
-                .body(mapper.writeValueAsString(subject));
+        return ResponseEntity.ok().body(mapper.writeValueAsString(subject));
     }
 
     @PostMapping("/update")
     public ResponseEntity<?> updateProfile(@RequestBody UpdateProfileForm updateProfileForm) throws JsonProcessingException {
         try{
-            String email = updateProfileService.updateProfile(updateProfileForm);
-            return new ResponseEntity<>(new UpdateProfileResponse(
-                    email,
-                    "Password updated"
-            ), HttpStatus.OK);
+            updateProfileService.updateProfile(updateProfileForm);
+            DecodedJWT decodedJWT = JWT.decode(updateProfileForm.getJwt());
+//            Algorithm algorithm = Algorithm.HMAC256("secret");
+//            String newJwt = JWT.create()
+//                    .withSubject(updateProfileForm.getEmail())
+//                    .withArrayClaim("authorities", decodedJWT.getClaim("authorities").asArray(String.class))
+//                    .withExpiresAt(new Date(System.currentTimeMillis() + 600_000))
+//                    .sign(algorithm);
+            String newJwt = functions.createUserJwt(updateProfileForm.getEmail(), decodedJWT.getClaim("authorities").asArray(String.class), new Date(System.currentTimeMillis() + 600_000));
+            return new ResponseEntity<>(new UpdateProfileResponse(updateProfileForm.getEmail(), "Successfully updated profile.", newJwt), HttpStatus.OK);
         }
         catch(RuntimeException e) {
-            if(e.getMessage().equals("DB_ERR")) {
-                return new ResponseEntity<>(mapper.writeValueAsString("Unable to save updates to database"), HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-            else{
-                return new ResponseEntity<>(mapper.writeValueAsString(e.getMessage()), HttpStatus.EXPECTATION_FAILED);
-            }
+            String newJwt = functions.updateUserJwtExpiry(updateProfileForm.getJwt());
+            return new ResponseEntity<>(new UpdateProfileResponse(updateProfileForm.getOldEmail(), e.getMessage(), newJwt), HttpStatus.EXPECTATION_FAILED);
         }
     }
 }

@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 public class UpdateProfileForm {
     private String email;
+    private String oldEmail;
+    private String oldPassword;
     private String password;
     private String matching;
+    private String jwt;
 }

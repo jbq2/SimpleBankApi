@@ -6,6 +6,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.jbq2.simplebankapi.user_packages.user.User;
 import com.jbq2.simplebankapi.user_packages.user.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.regex.Pattern;
 @AllArgsConstructor
 public class UpdateProfileService {
     private UserService userService;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public String getPageContent(String jwt) {
         try {
@@ -28,23 +30,29 @@ public class UpdateProfileService {
     }
 
     public String updateProfile(UpdateProfileForm updateProfileForm) {
-        if(!updateProfileForm.getPassword().equals(updateProfileForm.getMatching())){
-            throw new RuntimeException("Non-matching passwords");
-        }
         Pattern pattern = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$");
         Matcher matcher = pattern.matcher(updateProfileForm.getPassword());
         if(!matcher.find()){
-            throw new RuntimeException("Invalid password");
+            throw new RuntimeException("Invalid password.");
         }
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if(!updateProfileForm.getPassword().equals(updateProfileForm.getMatching())){
+            throw new RuntimeException("Non-matching passwords.");
+        }
+
+        UserDetails userDetails = userService.loadUserByUsername(updateProfileForm.getOldEmail());
+        if(!bCryptPasswordEncoder.matches(updateProfileForm.getOldPassword(), userDetails.getPassword())) {
+            throw new RuntimeException("Incorrect password.");
+        }
+
         User user = new User();
         user.setEmail(updateProfileForm.getEmail());
-        user.setPassword(encoder.encode(updateProfileForm.getPassword()));
-        if(userService.updateUserByEmail(user)) {
-            return user.getEmail();
+        user.setPassword(bCryptPasswordEncoder.encode(updateProfileForm.getPassword()));
+        try {
+            userService.updateUserByEmail(user);
+            return updateProfileForm.getEmail();
         }
-        else {
-            throw new RuntimeException("DB_ERR");
+        catch(RuntimeException e) {
+            throw new RuntimeException("Email already exists.");
         }
     }
 }

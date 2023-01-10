@@ -2,6 +2,7 @@ package com.jbq2.simplebankapi.endpoints.public_accessible.login;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.jbq2.simplebankapi.helpers.FunctionsService;
 import com.jbq2.simplebankapi.token_management.ExpiredTokenService;
 import com.jbq2.simplebankapi.user_packages.user.UserService;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,7 @@ public class LoginController {
     public AuthenticationManager manager;
     public ExpiredTokenService expiredTokenService;
     private UserService userService;
+    private FunctionsService functions;
 
     @PostMapping("/login")
     @ResponseBody
@@ -40,12 +42,13 @@ public class LoginController {
             for(GrantedAuthority auth : grantedAuthoritiesCollection){
                 authorities.add(auth.getAuthority());
             }
-            Algorithm algorithm = Algorithm.HMAC256("secret");
-            String jwt = JWT.create()
-                    .withSubject(userDetails.getUsername())
-                    .withArrayClaim("authorities", authorities.toArray(new String[0]))
-                    .withExpiresAt(new Date(System.currentTimeMillis() + 600_000))
-                    .sign(algorithm);
+//            Algorithm algorithm = Algorithm.HMAC256("secret");
+//            String jwt = JWT.create()
+//                    .withSubject(userDetails.getUsername())
+//                    .withArrayClaim("authorities", authorities.toArray(new String[0]))
+//                    .withExpiresAt(new Date(System.currentTimeMillis() + 600_000))
+//                    .sign(algorithm);
+            String jwt = functions.createUserJwt(userDetails.getUsername(), authorities.toArray(new String[0]), new Date(System.currentTimeMillis() + 600_000));
             if(expiredTokenService.exists(jwt)) {
                 expiredTokenService.pop(jwt);
             }
@@ -55,10 +58,6 @@ public class LoginController {
             );
         }
         catch(RuntimeException e){
-            /*
-            * runtime exception is thrown if there is a duplicate key violation when registering a session
-            * this happens when a user has already signed in
-            * */
             return new ResponseEntity<>(
                     "There is already an existing session.",
                     HttpStatus.INTERNAL_SERVER_ERROR

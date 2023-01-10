@@ -15,7 +15,7 @@ public class FunctionsController {
     @PostMapping("/isLoggedIn")
     public ResponseEntity<?> isLoggedIn(@RequestHeader String jwt) {
         if(functionsService.isLoggedIn(jwt)) {
-            return new ResponseEntity<>(new IsLoggedInResponse(true, functionsService.updateJwt(jwt)), HttpStatus.OK);
+            return new ResponseEntity<>(new IsLoggedInResponse(true, functionsService.updateUserJwtExpiry(jwt)), HttpStatus.OK);
         }
         else {
             return new ResponseEntity<>(new IsLoggedInResponse(false, null), HttpStatus.UNAUTHORIZED);
