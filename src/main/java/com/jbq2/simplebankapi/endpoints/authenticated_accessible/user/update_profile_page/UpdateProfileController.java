@@ -9,11 +9,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jbq2.simplebankapi.helpers.FunctionsService;
 import com.jbq2.simplebankapi.jwt.JwtConstants;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;

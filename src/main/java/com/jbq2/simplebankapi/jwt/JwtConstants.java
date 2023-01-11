@@ -1,6 +1,5 @@
 package com.jbq2.simplebankapi.jwt;
 
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

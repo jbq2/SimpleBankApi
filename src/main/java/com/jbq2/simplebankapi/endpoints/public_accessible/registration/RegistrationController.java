@@ -1,4 +1,5 @@
 package com.jbq2.simplebankapi.endpoints.public_accessible.registration;
+
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
