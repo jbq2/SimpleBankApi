@@ -3,7 +3,6 @@ package com.jbq2.simplebankapi.user_packages.user;
 import com.jbq2.simplebankapi.user_packages.interfaces.QueryableById;
 import com.jbq2.simplebankapi.user_packages.user_role.UserRoleDao;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,7 +13,6 @@ import java.util.Collection;
 import java.util.List;
 
 @Data
-@EqualsAndHashCode
 @NoArgsConstructor
 public class User implements QueryableById, UserDetails {
     private Long id;

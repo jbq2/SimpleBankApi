@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 
-@AllArgsConstructor
 @Data
+@AllArgsConstructor
 public class UpdateProfileResponse {
     String email;
     String message;

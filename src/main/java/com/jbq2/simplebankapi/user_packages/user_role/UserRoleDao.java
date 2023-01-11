@@ -1,22 +1,19 @@
 package com.jbq2.simplebankapi.user_packages.user_role;
 
-import com.jbq2.simplebankapi.user_packages.interfaces.DataObjectAccessableById;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/* data access object for UserRole */
-@Component
+
 @Repository
-public class UserRoleDao implements DataObjectAccessableById<UserRole> {
+public class UserRoleDao {
 
     @Autowired
-    JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
     RowMapper<UserRole> userRoleRowMapper = ((rs, rowNum) -> {
        UserRole userRole = new UserRole();
@@ -32,7 +29,6 @@ public class UserRoleDao implements DataObjectAccessableById<UserRole> {
         return rs.getString("name");
     });
 
-    @Override
     public List<UserRole> findAll() {
         String sql = "SELECT * FROM user_role";
         try{
@@ -68,19 +64,6 @@ public class UserRoleDao implements DataObjectAccessableById<UserRole> {
         }
     }
 
-    @Override
-    public UserRole findById(Long id) {
-        String sql = "SELECT * FROM user_role " +
-                "WHERE id = ?";
-        try{
-            return jdbcTemplate.queryForObject(sql, userRoleRowMapper, id);
-        }
-        catch(DataAccessException e){
-            return null;
-        }
-    }
-
-    @Override
     public UserRole save(UserRole userRole) {
         String sql = "INSERT INTO user_role (user_id, role_id) " +
                 "VALUES (?, ?)";
@@ -95,7 +78,6 @@ public class UserRoleDao implements DataObjectAccessableById<UserRole> {
         }
     }
 
-    @Override
     public UserRole updateWithId(UserRole userRole) {
         String sql = "UPDATE user_role " +
                 "SET user_id = ?, role_id =? " +
@@ -112,7 +94,6 @@ public class UserRoleDao implements DataObjectAccessableById<UserRole> {
         }
     }
 
-    @Override
     public Boolean delete(Long id) {
         String sql = "DELETE FROM user_role " +
                 "WHERE id = ?";

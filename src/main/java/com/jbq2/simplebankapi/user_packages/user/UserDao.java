@@ -1,20 +1,17 @@
 package com.jbq2.simplebankapi.user_packages.user;
 
-import com.jbq2.simplebankapi.user_packages.interfaces.DataObjectAccessableById;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/* data access object for User */
-@Component
+
 @Repository
-public class UserDao implements DataObjectAccessableById<User> {
+public class UserDao {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -29,7 +26,6 @@ public class UserDao implements DataObjectAccessableById<User> {
         return user;
     });
 
-    @Override
     public List<User> findAll() {
         String sql = "SELECT * FROM USERS";
         try{
@@ -40,7 +36,6 @@ public class UserDao implements DataObjectAccessableById<User> {
         }
     }
 
-    @Override
     public User findById(Long id) {
         String sql = "SELECT * FROM USERS " +
                 "WHERE id = ?";
@@ -63,7 +58,6 @@ public class UserDao implements DataObjectAccessableById<User> {
         }
     }
 
-    @Override
     public User save(User user) {
         String sql = "INSERT INTO USERS (email, password) " +
                 "VALUES (?, ?)";
@@ -80,7 +74,6 @@ public class UserDao implements DataObjectAccessableById<User> {
         }
     }
 
-    @Override
     public User updateWithId(User user) {
         String sql = "UPDATE USERS " +
                 "SET email = ?, password = ? " +
@@ -107,7 +100,6 @@ public class UserDao implements DataObjectAccessableById<User> {
         return user;
     }
 
-    @Override
     public Boolean delete(Long id) {
         String sql = "DELETE FROM users " +
                 "WHERE id = ?";

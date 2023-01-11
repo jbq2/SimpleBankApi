@@ -1,9 +1,10 @@
 package com.jbq2.simplebankapi.endpoints.public_accessible.tabs;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.jbq2.simplebankapi.helpers.FunctionsService;
-import com.jbq2.simplebankapi.token_management.ExpiredTokenService;
+import com.jbq2.simplebankapi.jwt.JwtConstants;
 import com.jbq2.simplebankapi.user_packages.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,25 +15,20 @@ import java.util.*;
 @Service
 @AllArgsConstructor
 public class TabsService {
+
     private UserService userService;
     private FunctionsService functions;
-    private ExpiredTokenService expiredTokenService;
+    private JwtConstants jwtConstants;
 
     public List<Tab> getTabs(String jwt) {
         List<Tab> tabs = new ArrayList<>();
-        Map<String, String> map = new HashMap<>();
         if (!functions.isLoggedIn(jwt)) {
-            /*
-             * email is null if there exists no email tied to the passed jwt
-             * if this is the case, then default the tabs to Register and Login and return
-             * */
             tabs.add(new Tab("Login", "/login"));
             tabs.add(new Tab("Register", "/register"));
         }
         else{
-            String oldJwt = jwt;
-            jwt = functions.updateUserJwtExpiry(jwt);
-            DecodedJWT decodedJWT = JWT.decode(jwt);
+            String newJwt = functions.updateUserJwtExpiry(jwt);
+            DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256(jwtConstants.key)).build().verify(newJwt);
             String email = decodedJWT.getSubject();
             Collection<? extends GrantedAuthority> authorities = userService.loadUserByUsername(email).getAuthorities();
 
@@ -60,11 +56,8 @@ public class TabsService {
                 tabs.add(new Tab("Profile", "/profile"));
                 tabs.add(new Tab("Logout", "#"));
             }
-
-            if(expiredTokenService.add(oldJwt) == null) {
-                throw new RuntimeException();
-            }
         }
+
         return tabs;
     }
 }

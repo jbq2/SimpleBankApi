@@ -3,8 +3,8 @@ package com.jbq2.simplebankapi.endpoints.authenticated_accessible.user.update_pr
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @Data
+@NoArgsConstructor
 public class UpdateProfileForm {
     private String email;
     private String oldEmail;

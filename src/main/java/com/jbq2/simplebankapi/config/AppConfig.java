@@ -1,6 +1,6 @@
 package com.jbq2.simplebankapi.config;
 
-import com.jbq2.simplebankapi.token_management.JwtAuthenticationFilter;
+import com.jbq2.simplebankapi.jwt.JwtAuthenticationFilter;
 import com.jbq2.simplebankapi.user_packages.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +23,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.List;
 
-/*
-* NOTE: this is for testing purposes ONLY
-* A proper Session registry will be created in the DB
-* */
 
 @Configuration
 @EnableWebSecurity
@@ -52,9 +48,7 @@ public class AppConfig {
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().authenticationEntryPoint(
                         ((request, response, exception) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED, exception.getMessage()))
-                ).and()
-//                .cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
-                .cors(Customizer.withDefaults());
+                ).and().cors(Customizer.withDefaults());
         return http.build();
     }
 

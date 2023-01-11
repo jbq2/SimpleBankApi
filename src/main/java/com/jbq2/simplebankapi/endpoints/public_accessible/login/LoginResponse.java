@@ -7,12 +7,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class LoginResponse {
-    /*
-    * login response will contain the user's session id, authorities, and a developer message
-    * */
-//    private String session_id;
-//    private String email;
-//    private List<String> authorities;
     private String jwt;
     private String message;
 }

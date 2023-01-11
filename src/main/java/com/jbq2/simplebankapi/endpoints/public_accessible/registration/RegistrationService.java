@@ -18,14 +18,13 @@ public class RegistrationService {
 
     private final UserService userService;
     private final UserRoleService userRoleService;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
     public String validateAndSave(RegistrationForm registrationForm){
         User user = new User();
         UserRole userRole = new UserRole();
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-        /* validates email */
         Pattern pattern = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
         Matcher matcher = pattern.matcher(registrationForm.getEmail());
         if(!matcher.find()){
@@ -33,7 +32,6 @@ public class RegistrationService {
         }
         user.setEmail(registrationForm.getEmail());
 
-        /* validates password */
         pattern = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$");
         matcher = pattern.matcher(registrationForm.getPassword());
         if(!matcher.find()){
@@ -42,21 +40,19 @@ public class RegistrationService {
         if(!registrationForm.getPassword().equals(registrationForm.getMatching())){
             throw new RuntimeException("Password confirmation does not match the password.");
         }
-        /* encode password before saving to db */
-        user.setPassword(encoder.encode(registrationForm.getPassword()));
+        user.setPassword(bCryptPasswordEncoder.encode(registrationForm.getPassword()));
 
-        /* DataAccessException if email UNIQUE constraint is violated */
         user = userService.saveUser(user);
         if(user == null){
             throw new RuntimeException("Email already exists.");
         }
 
-        /* saves user_role, throws error if non unique */
         userRole.setUser_id(user.getId());
         userRole.setRole_id(RoleEnum.USER.getValue());
         if(userRoleService.saveUserRole(userRole) == null){
             throw new RuntimeException("User-role combination already exists.");
         }
+
         return registrationForm.getEmail();
     }
 }

@@ -3,6 +3,7 @@ package com.jbq2.simplebankapi.endpoints.authenticated_accessible.user.update_pr
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.jbq2.simplebankapi.jwt.JwtConstants;
 import com.jbq2.simplebankapi.user_packages.user.User;
 import com.jbq2.simplebankapi.user_packages.user.UserService;
 import lombok.AllArgsConstructor;
@@ -18,10 +19,11 @@ import java.util.regex.Pattern;
 public class UpdateProfileService {
     private UserService userService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private JwtConstants jwtConstants;
 
     public String getPageContent(String jwt) {
         try {
-            DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256("secret")).build().verify(jwt);
+            DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256(jwtConstants.key)).build().verify(jwt);
             return decodedJWT.getSubject();
         }
         catch(Exception e) {

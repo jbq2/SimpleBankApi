@@ -4,8 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+
 @RequestMapping("/api/v1")
+@RestController
 @AllArgsConstructor
 public class RegistrationController {
     private final RegistrationService registrationService;
@@ -15,7 +16,7 @@ public class RegistrationController {
     public ResponseEntity<?> register(@RequestBody RegistrationForm registrationForm){
 
         try{
-            final String registrationEmail = registrationService.validateAndSave(registrationForm);
+            String registrationEmail = registrationService.validateAndSave(registrationForm);
             return new ResponseEntity<>(
                     new RegistrationResponse(registrationEmail, "Successfully registered!"),
                     HttpStatus.OK
