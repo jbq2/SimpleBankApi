@@ -48,7 +48,7 @@ public class UpdateProfileService {
         user.setEmail(updateProfileForm.getEmail());
         user.setPassword(bCryptPasswordEncoder.encode(updateProfileForm.getPassword()));
         try {
-            userService.updateUserByEmail(user);
+            userService.updateExistingUser(user, updateProfileForm.getOldEmail());
             return updateProfileForm.getEmail();
         }
         catch(RuntimeException e) {

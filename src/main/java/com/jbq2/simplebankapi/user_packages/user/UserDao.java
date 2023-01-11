@@ -98,12 +98,12 @@ public class UserDao implements DataObjectAccessableById<User> {
         }
     }
 
-    public User updateWithEmail(User user) {
+    public User updateExistingUser(User user, String oldEmail) {
         String sql = "UPDATE USERS " +
                 "SET email = ?, password = ? " +
                 "WHERE email = ?";
 
-        jdbcTemplate.update(sql, user.getEmail(), user.getPassword(), user.getEmail());
+        jdbcTemplate.update(sql, user.getEmail(), user.getPassword(), oldEmail);
         return user;
     }
 
