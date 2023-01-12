@@ -20,9 +20,9 @@ import java.util.*;
 @RequestMapping("/api/v1")
 @RestController
 public class LoginController {
-    public AuthenticationManager manager;
-    private UserService userService;
-    private FunctionsService functions;
+    private final AuthenticationManager manager;
+    private final UserService userService;
+    private final FunctionsService functions;
 
     /**
      * This constructor initializes all 3 attributes of LoginController through constructor injection.
