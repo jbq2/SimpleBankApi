@@ -2,7 +2,6 @@ package com.jbq2.simplebankapi.endpoints.public_accessible.login;
 
 import com.jbq2.simplebankapi.helpers.FunctionsService;
 import com.jbq2.simplebankapi.user_packages.user.UserService;
-import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,15 +12,35 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-
+/**
+ * This class is a controller class that is responsible for user login.
+ * @author Joshua Quizon
+ * @version 0.1
+ */
 @RequestMapping("/api/v1")
 @RestController
-@AllArgsConstructor
 public class LoginController {
     public AuthenticationManager manager;
     private UserService userService;
     private FunctionsService functions;
 
+    /**
+     * This constructor initializes all 3 attributes of LoginController through constructor injection.
+     * @param authenticationManager An object of type AuthenticationManager that was created in the authenticationManager method in AppConfig.
+     * @param userService An object of type UserService that implements UserDetails service and provides methods for gathering user data.
+     * @param functionsService An object of type FunctionsService that is responsible for providing various helpful methods.
+     */
+    public LoginController(AuthenticationManager authenticationManager, UserService userService, FunctionsService functionsService) {
+        this.manager = authenticationManager;
+        this.userService = userService;
+        this.functions = functionsService;
+    }
+
+    /**
+     * This method is a POST request endpoint that authenticates and handles login requests.
+     * @param loginForm An object of type LoginForm that matches the attributes of the login form from the front end.
+     * @return Returns a ResponseEntity that holds a LoginResponse object and the HttpStatus.
+     */
     @PostMapping("/login")
     @ResponseBody
     public ResponseEntity<?> loginUser(@RequestBody LoginForm loginForm) {
