@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 
 /**
- * This class is a controller that handles requests for obtaining the correct tabs.
+ * Controller that handles requests for obtaining the correct tabs.
  * @author Joshua Quizon
  * @version 0.1
  */
@@ -20,16 +20,16 @@ public class TabsController {
     private final TabsService tabsService;
 
     /**
-     * This constructor initializes the TabsService attribute of the TabsController object.
-     * @param tabsService An object of type TabsService that handles obtaining the correct list of tabs.
+     * Initializes the TabsService attribute of the TabsController object.
+     * @param tabsService Provides methods to obtain the correct set of tabs.
      */
     public TabsController(TabsService tabsService) {
         this.tabsService = tabsService;
     }
 
     /**
-     * This method is a non-protected GET endpoint that accepts requests to get the list of navigation bar tabs.
-     * @param jwt A string depicting the JSON web token included in the "jwt" header of the request.
+     * Non-protected GET endpoint that accepts requests to get the list of navigation bar tabs.
+     * @param jwt The JSON web token included in the "jwt" header of the request.
      * @return Returns a ResponseEntity object that includes a list of tabs and a 200 OK HTTP status code.
      */
     @GetMapping("/tabs")

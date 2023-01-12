@@ -23,12 +23,10 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * This is a configuration class for the API, setting up user authentication, protected and unprotected endpoints, and CORS.
- *
+ * Configuration class for the API that sets up user authentication, protected and unprotected endpoints, and CORS.
  * @author Joshua Quizon
  * @version 0.1
  */
-
 @Configuration
 @EnableWebSecurity
 public class AppConfig {
@@ -37,10 +35,10 @@ public class AppConfig {
     private final BCryptPasswordEncoder passwordEncoder;
 
     /**
-     * A constructor for AppConfig that initializes all class attributes--constructor injection is implicitly performed by Spring Framework.
-     * @param userService A constructor-injected object of type UserService, responsible for providing services to gather user details.
-     * @param jwtAuthenticationFilter A constructor-injected object of type JwtAuthenticationFilter, responsible for filtering JSON web tokens.
-     * @param passwordEncoder A constructor-injected object of type BCryptPasswordEncoder, responsible for encoding strings with the BCrypt algorithm.
+     * Initializes all class attributes--constructor injection is implicitly performed by Spring Framework.
+     * @param userService Provides services for gathering and saving user details from and to the database.
+     * @param jwtAuthenticationFilter Filters JSON web tokens.
+     * @param passwordEncoder Encrypts strings using the BCrypt algorithm.
      */
     public AppConfig(UserService userService, JwtAuthenticationFilter jwtAuthenticationFilter, BCryptPasswordEncoder passwordEncoder) {
         this.userService = userService;
@@ -49,10 +47,10 @@ public class AppConfig {
     }
 
     /**
-     * This method configures the AuthenticationManagerBuilder, which is then used to create the AuthenticationManager.
+     * Configures the AuthenticationManagerBuilder which is then used to create the AuthenticationManager.
      * @param auth An autowired AuthenticationManagerBuilder that will have its userDetailsService and passwordEncoder configured
-     *             with the constructor injected UserService and BCryptPasswordEncoder.
-     * @throws Exception This method throws an Exception if the userDetailsService method throws its Exception.
+     *             with the constructor-injected UserService and BCryptPasswordEncoder.
+     * @throws Exception Throws an Exception if the userDetailsService method throws its Exception.
      */
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -60,11 +58,11 @@ public class AppConfig {
     }
 
     /**
-     * This method configures a SecurityFilterChain to authorize requests, protect endpoints,
+     * Configures a SecurityFilterChain to authorize requests, protect endpoints,
      * authenticate JSON web tokens, handle unauthorized requests, and apply the custom CORS configuration.
      * @param http A HttpSecurity bean produced upon application startup; meant to be configured.
      * @return Returns the built HTTP configuration which is a SecurityFilterChain object.
-     * @throws Exception This method throws an Exception if any of the http methods throw their Exceptions.
+     * @throws Exception Throws an Exception if any of the http methods throw their Exceptions.
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -82,9 +80,9 @@ public class AppConfig {
     }
 
     /**
-     * This method configures CORS for the application.  As of right now, all origins, headers, and methods are allowed,
+     * Configures a CorsConfigurationSource for the application--as of version 0.1, all origins, headers, and methods are allowed,
      * and CORS is applied to all endpoints.
-     * @return Returns an object of type CorsConfigurationSource, which is then fed into the .cors() method of the HttpSecurity object.
+     * @return Returns a CorsConfigurationSource bean which is then fed into the cors() method of the HttpSecurity object.
      */
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
@@ -98,11 +96,11 @@ public class AppConfig {
     }
 
     /**
-     * This method creates a Bean of type AuthenticationManager which is used for user login purposes.
-     * @param authenticationConfiguration A bean of type AuthenticationConfiguration that is created upon application
-     *                                    startup and configured by configureGlobal() in AppConfig.
+     * Creates a bean of type AuthenticationManager which is used for user login purposes.
+     * @param authenticationConfiguration A AuthenticationConfiguration bean that is created upon application
+     *                                    startup and configured by configureGlobal().
      * @return Returns an AuthenticationManager bean which is then used for user login in LoginController.
-     * @throws Exception This method throws an Exception if the getAuthenticationManager method throws its Exception.
+     * @throws Exception Throws an Exception if the getAuthenticationManager method throws its Exception.
      */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
