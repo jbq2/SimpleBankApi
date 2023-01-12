@@ -12,6 +12,11 @@ public class LoginResponse {
     private String jwt;
     private String message;
 
+    /**
+     * This constructor initializes the 2 attributes of the LoginResponse object.
+     * @param jwt A String depicting the JSON web token of the user.
+     * @param message A String depicting a developer written message.
+     */
     public LoginResponse(String jwt, String message) {
         this.jwt = jwt;
         this.message = message;
