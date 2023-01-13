@@ -3,11 +3,10 @@ package com.jbq2.simplebankapi.endpoints.authenticated_accessible.user.update_pr
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-
 @Data
 @AllArgsConstructor
 public class UpdateProfileResponse {
-    String email;
-    String message;
-    String jwt;
+    private String email;
+    private String message;
+    private String jwt;
 }
