@@ -3,6 +3,12 @@ package com.jbq2.simplebankapi.endpoints.authenticated_accessible.user.update_pr
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Plain-old-Java-object that contains all fields from the update profile form as well as other information that allows for
+ * updating user details in the database.
+ * @author Joshua Quizon
+ * @version 0.1
+ */
 @Data
 @NoArgsConstructor
 public class UpdateProfileForm {
