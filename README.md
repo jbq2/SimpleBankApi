@@ -1,7 +1,5 @@
 # SimpleBankApi
-# [Link to SimpleBankWebApp](https://github.com/jbq2/SimpleBankWebApp)
-# Developed by Joshua Quizon
-This project was generated using IntelliJ's Spring Initializer.
-
-## Development Server
-Run this project for a local development server.  Navigate to http://localhost:8080/.
+## Developed by Joshua Quizon
+### Milestone 1
+- [Link to Milestone 1 Documentation](https://jbq2.github.io/SimpleBankApi/)
+- Milestone demo links (work in progress 01/12/2023)
