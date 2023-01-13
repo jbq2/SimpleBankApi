@@ -13,22 +13,22 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 /**
- * This class is a controller class that is responsible for user login.
+ * Controller class that handles user login requests.
  * @author Joshua Quizon
  * @version 0.1
  */
 @RequestMapping("/api/v1")
 @RestController
 public class LoginController {
-    public AuthenticationManager manager;
-    private UserService userService;
-    private FunctionsService functions;
+    private final AuthenticationManager manager;
+    private final UserService userService;
+    private final FunctionsService functions;
 
     /**
-     * This constructor initializes all 3 attributes of LoginController through constructor injection.
-     * @param authenticationManager An object of type AuthenticationManager that was created in the authenticationManager method in AppConfig.
-     * @param userService An object of type UserService that implements UserDetails service and provides methods for gathering user data.
-     * @param functionsService An object of type FunctionsService that is responsible for providing various helpful methods.
+     * Initializes all 3 attributes of LoginController through constructor injection.
+     * @param authenticationManager Created in the authenticationManager method in AppConfig and will be used to authenticate the user's entered email and password.
+     * @param userService Provides methods for gathering and saving user data from and to the database.
+     * @param functionsService Provides a method for creating JSON web tokens.
      */
     public LoginController(AuthenticationManager authenticationManager, UserService userService, FunctionsService functionsService) {
         this.manager = authenticationManager;
@@ -37,8 +37,8 @@ public class LoginController {
     }
 
     /**
-     * This method is a POST request endpoint that authenticates and handles login requests.
-     * @param loginForm An object of type LoginForm that matches the attributes of the login form from the front end.
+     * Non-protected POST request endpoint that authenticates and handles login requests.
+     * @param loginForm Object that holds the field inputs of the login form from the web application.
      * @return Returns a ResponseEntity that holds a LoginResponse object and the HttpStatus.
      */
     @PostMapping("/login")

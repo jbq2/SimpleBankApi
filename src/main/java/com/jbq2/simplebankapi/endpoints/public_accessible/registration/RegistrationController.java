@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * This class is responsible for accepting user registration requests.
+ * Controller class that is responsible for accepting user registration requests.
  * @author Joshua Quizon
  * @version 0.1
  */
@@ -15,7 +15,7 @@ public class RegistrationController {
     private final RegistrationService registrationService;
 
     /**
-     * This constructor initializes the only attribute of RegistrationController through constructor injection.
+     * Initializes the only attribute of RegistrationController through constructor injection.
      * @param registrationService An object of type RegistrationService that is responsible for processing the registration request information.
      */
     public RegistrationController(RegistrationService registrationService) {
@@ -23,10 +23,9 @@ public class RegistrationController {
     }
 
     /**
-     * This method is a POST request endpoint that accepts the registration form details and calls the RegistrationService
-     * object to validate and save the user information.
-     * @param registrationForm An object of type RegistrationForm that includes all the necessary user information for registration.
-     * @return Returns an object of type ResponseEntity that holds the user's email address or an error message depending on how validation and saving went.
+     * Non-protected POST request endpoint that calls the RegistrationService object to validate and save the user information stored in the RegistrationForm object.
+     * @param registrationForm Includes all the necessary user information for registration.
+     * @return Returns a ResponseEntity object that holds the user's email address or an error message depending on how validation and saving went.
      */
     @PostMapping("/register")
     @ResponseBody

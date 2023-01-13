@@ -1,6 +1,5 @@
 com.jbq2.simplebankapi
 com.jbq2.simplebankapi.config
-com.jbq2.simplebankapi.endpoints
 com.jbq2.simplebankapi.endpoints.authenticated_accessible.user.update_profile_page
 com.jbq2.simplebankapi.endpoints.public_accessible.login
 com.jbq2.simplebankapi.endpoints.public_accessible.registration

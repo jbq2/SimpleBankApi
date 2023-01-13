@@ -9,7 +9,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import javax.sql.DataSource;
 
 /**
- * This class configures database connectivity details.
+ * Configures database connectivity details.
  * @author Joshua Quizon
  * @version 0.1
  */
@@ -25,8 +25,8 @@ public class DbConfig {
     private String password;
 
     /**
-     * This method creates a bean of type DataSource which holds the configuration that connect to the database.
-     * @return Returns an object of type DataSource which is implicitly used for querying the database.
+     * Creates configures a DataSource object which holds the information to connect to the database.
+     * @return Returns a DataSource bean which is used in the jdbcTemplate() method.
      */
     @Bean
     public DataSource dataSource(){
@@ -39,8 +39,8 @@ public class DbConfig {
     }
 
     /**
-     * This method creates a bean of type JdbcTemplate.
-     * @return Returns an object of type JdbcTemplate which is used by various data access objects.
+     * Creates a bean JdbcTemplate bean.
+     * @return Returns a JdbcTemplate object which is used by various data access objects, allowing for sending queries to the database.
      */
     @Bean
     public JdbcTemplate jdbcTemplate(){

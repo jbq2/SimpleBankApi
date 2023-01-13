@@ -12,7 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * This class is a service that is responsible for handling the business logic for registering a new user.
+ * Service that is responsible for handling the business logic for registering a new user.
  * @author Joshua Quizon
  * @version 0.1
  */
@@ -24,10 +24,10 @@ public class RegistrationService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     /**
-     * This constructor initializes all 3 attributes of the RegistrationService object.
-     * @param userService An object of type UserService that handles the gathering and saving of user details.
-     * @param userRoleService An object of type UserRoleService that handles the gathering and saving of user-role relationships.
-     * @param bCryptPasswordEncoder An object of type BCryptPasswordEncoder that handles the encryption and decryption of passwords.
+     * Initializes all 3 attributes of the RegistrationService object.
+     * @param userService Provides services for gathering and saving user details from and to the database.
+     * @param userRoleService Provides services for gathering and saving user-role relationships from and to the database.
+     * @param bCryptPasswordEncoder Encrypts and decrypts passwords.
      */
     public RegistrationService(UserService userService, UserRoleService userRoleService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userService = userService;
@@ -36,10 +36,10 @@ public class RegistrationService {
     }
 
     /**
-     * This method is called to validate the inputs to the form fields, and if they are valid, saves the user details.
-     * @param registrationForm An object of type RegistrationForm that holds the user's entered registration information.
+     * Validates the form field inputs, and if they are valid, saves the user details.
+     * @param registrationForm Holds the user's entered registration information.
      * @return Returns a String depicting the email address the user registered with.
-     * @throws RuntimeException A RuntimeException is thrown when the forms fields are invalid or if the entered email address already exists in the database.
+     * @throws RuntimeException Throws a RuntimeException when the forms fields are invalid or if the entered email address already exists in the database.
      */
     public String validateAndSave(RegistrationForm registrationForm){
         User user = new User();
