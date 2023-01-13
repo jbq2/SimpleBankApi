@@ -1,6 +1,5 @@
 package com.jbq2.simplebankapi.helpers;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
