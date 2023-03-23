@@ -1,7 +1,9 @@
 package com.jbq2.simplebankapi;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 /**
  * SpringBootApplication driver class
@@ -19,4 +21,8 @@ public class SimpleBankApiApplication {
         SpringApplication.run(SimpleBankApiApplication.class, args);
     }
 
+    @Bean
+    public ObjectMapper createObjectMapper() {
+        return new ObjectMapper();
+    }
 }
