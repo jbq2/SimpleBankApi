@@ -1,6 +1,7 @@
 package com.jbq2.simplebankapi.endpoints.public_accessible.registration;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Plain-old-Java-object that includes the details from the registration form in the web application.

@@ -1,6 +1,7 @@
 package com.jbq2.simplebankapi.endpoints.public_accessible.login;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Plain-old-Java-object consisting of the necessary fields from the login form in the web application.
