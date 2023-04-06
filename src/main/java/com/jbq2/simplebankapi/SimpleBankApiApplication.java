@@ -20,9 +20,4 @@ public class SimpleBankApiApplication {
     public static void main(String[] args) {
         SpringApplication.run(SimpleBankApiApplication.class, args);
     }
-
-    @Bean
-    public ObjectMapper createObjectMapper() {
-        return new ObjectMapper();
-    }
 }
