@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Service class that provides methods that use business logic to get user-role relationships.
@@ -29,16 +30,10 @@ public class UserRoleService {
      * @return Returns a List of RoleEnum objects which are the authorities belonging to the user.
      */
     public List<RoleEnum> getUserRoles(Long id){
-        List<RoleEnum> roles = new ArrayList<>();
-        for(UserRole userRole : userRoleDao.findAllByUserId(id)){
-            if (userRole.getRole_id() == 1) {
-                roles.add(RoleEnum.ADMIN);
-            }
-            else{
-                roles.add(RoleEnum.USER);
-            }
-        }
-        return roles;
+        return userRoleDao.findAllByUserId(id)
+                .stream()
+                .map(userRole -> (userRole.getRole_id() == 1) ? RoleEnum.ADMIN : RoleEnum.USER)
+                .collect(Collectors.toList());
     }
 
     /**
