@@ -5,11 +5,13 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.jbq2.simplebankapi.helpers.FunctionsService;
 import com.jbq2.simplebankapi.jwt.JwtConstants;
+import com.jbq2.simplebankapi.user_packages.role.RoleEnum;
 import com.jbq2.simplebankapi.user_packages.user.UserService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Service that contains the logic that finds the correct set of navigation bar tabs depending on login status and user authorities.
@@ -40,10 +42,10 @@ public class TabsService {
      * @return Returns a List of Tab objects.
      */
     public List<Tab> getTabs(String jwt) {
-        List<Tab> tabs = new ArrayList<>();
+        List<Tab> tabs;
+
         if (!functions.isLoggedIn(jwt)) {
-            tabs.add(new Tab("Login", "/login"));
-            tabs.add(new Tab("Register", "/register"));
+            tabs = Arrays.asList(TabsConstants.NOT_LOGGED_IN);
         }
         else{
             String newJwt = functions.updateUserJwtExpiry(jwt);
@@ -51,30 +53,12 @@ public class TabsService {
             String email = decodedJWT.getSubject();
             Collection<? extends GrantedAuthority> authorities = userService.loadUserByUsername(email).getAuthorities();
 
-            boolean isAdmin = false;
-            boolean isUser = false;
-            for(GrantedAuthority auth : authorities) {
-                if(auth.getAuthority().equals("ADMIN")) {
-                    isAdmin = true;
-                }
-                if(auth.getAuthority().equals("USER")) {
-                    isUser = true;
-                }
-            }
+            Set<RoleEnum> roleSet = authorities
+                    .stream()
+                    .map(auth -> auth.getAuthority().equals("ADMIN") ? RoleEnum.ADMIN : RoleEnum.USER)
+                    .collect(Collectors.toSet());
 
-            if(isAdmin) {
-                tabs.add(new Tab("Dashboard", "/dashboard"));
-                tabs.add(new Tab("Accounts", "/accounts"));
-                tabs.add(new Tab("Profile", "/profile"));
-                tabs.add(new Tab("Admin", "#"));
-                tabs.add(new Tab("Logout", "#"));
-            }
-            if(isUser && !isAdmin) {
-                tabs.add(new Tab("Dashboard", "/dashboard"));
-                tabs.add(new Tab("Accounts", "/accounts"));
-                tabs.add(new Tab("Profile", "/profile"));
-                tabs.add(new Tab("Logout", "#"));
-            }
+            tabs = (roleSet.contains(RoleEnum.ADMIN)) ? Arrays.asList(TabsConstants.LOGGED_IN_ADMIN) : Arrays.asList(TabsConstants.LOGGED_IN_USER);
         }
 
         return tabs;

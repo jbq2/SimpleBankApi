@@ -1,12 +1,10 @@
 package com.jbq2.simplebankapi.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jbq2.simplebankapi.jwt.JwtAuthenticationFilter;
 import com.jbq2.simplebankapi.user_packages.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
