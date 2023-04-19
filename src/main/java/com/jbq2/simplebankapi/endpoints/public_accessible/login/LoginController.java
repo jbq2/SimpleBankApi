@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Controller class that handles user login requests.
@@ -48,11 +49,11 @@ public class LoginController {
 
         try{
             UserDetails userDetails = userService.loadUserByUsername(loginForm.getEmail());
-            Collection<? extends GrantedAuthority> grantedAuthoritiesCollection = userDetails.getAuthorities();
-            List<String> authorities = new ArrayList<>();
-            for(GrantedAuthority auth : grantedAuthoritiesCollection){
-                authorities.add(auth.getAuthority());
-            }
+
+            List<String> authorities = userDetails.getAuthorities()
+                    .stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .collect(Collectors.toList());
 
             String jwt = functions.createUserJwt(userDetails.getUsername(), authorities.toArray(new String[0]), new Date(System.currentTimeMillis() + 600_000));
 

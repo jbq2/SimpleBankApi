@@ -43,6 +43,7 @@ public class TabsService {
      */
     public List<Tab> getTabs(String jwt) {
         List<Tab> tabs;
+
         if (!functions.isLoggedIn(jwt)) {
             tabs = Arrays.asList(TabsConstants.NOT_LOGGED_IN);
         }
