@@ -16,8 +16,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Component class that filters JSON web tokens in the "Authorization" of a request to a protected endpoint.
@@ -56,11 +56,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256(jwtConstants.key)).build().verify(jwt);
             Claim claim = decodedJWT.getClaim("authorities");
-            List<String> authoritiesList = claim.asList(String.class);
-            List<GrantedAuthority> authorities = new ArrayList<>();
-            for(String authority : authoritiesList) {
-                authorities.add(new SimpleGrantedAuthority(authority));
-            }
+
+            List<GrantedAuthority> authorities = claim.asList(String.class)
+                    .stream()
+                    .map(SimpleGrantedAuthority::new)
+                    .collect(Collectors.toList());
+
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(decodedJWT.getSubject(), null, authorities);
             SecurityContextHolder.getContext().setAuthentication(auth);
 
